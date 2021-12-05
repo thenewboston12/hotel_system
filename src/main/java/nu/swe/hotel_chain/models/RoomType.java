@@ -1,12 +1,29 @@
 package nu.swe.hotel_chain.models;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-@Table(name = "Room_Type")
-public class RoomType {
+@Table(name = "hotelroomtype")
+public class RoomType implements Serializable {
+    /*Fields*/
     @Id
-    private Long room_type_id;
+    @Column(name = "hotel_id")
+    private String hotel_id;
+
+    @Id
+    @Column(name = "r_type")
+    private Long r_type;
+
+    @Column(name = "size")
+    private double size;
+
+    @Column(name = "capacity")
+    private int capacity;
+
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "hotel_id", nullable = false, unique = true)
+    private Hotel hotel;
+
+
 }

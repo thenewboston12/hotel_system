@@ -28,6 +28,9 @@ public class Hotel {
     @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Telephone> h_telephones = new HashSet<>();
 
+    @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<RoomType> h_roomtypes = new HashSet<>();
+
     public Hotel(){
 
     }
