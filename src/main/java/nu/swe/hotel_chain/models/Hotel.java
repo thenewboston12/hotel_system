@@ -1,5 +1,7 @@
 package nu.swe.hotel_chain.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,7 +28,12 @@ public class Hotel {
     private String h_country;
 
     @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Set<Telephone> h_telephones = new HashSet<>();
+
+    @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<RoomType> h_roomtypes = new HashSet<>();
 
     public Hotel(){
 
@@ -45,5 +52,74 @@ public class Hotel {
         this.h_address = h_address;
         this.h_city = h_city;
         this.h_country = h_country;
+    }
+
+    public String getHotel_id() {
+        return hotel_id;
+    }
+
+    public void setHotel_id(String hotel_id) {
+        this.hotel_id = hotel_id;
+    }
+
+    public String getH_name() {
+        return h_name;
+    }
+
+    public void setH_name(String h_name) {
+        this.h_name = h_name;
+    }
+
+    public String getH_address() {
+        return h_address;
+    }
+
+    public void setH_address(String h_address) {
+        this.h_address = h_address;
+    }
+
+    public String getH_city() {
+        return h_city;
+    }
+
+    public void setH_city(String h_city) {
+        this.h_city = h_city;
+    }
+
+    public String getH_country() {
+        return h_country;
+    }
+
+    public void setH_country(String h_country) {
+        this.h_country = h_country;
+    }
+
+    public Set<Telephone> getH_telephones() {
+        return h_telephones;
+    }
+
+    public void setH_telephones(Set<Telephone> h_telephones) {
+        this.h_telephones = h_telephones;
+    }
+
+    public Set<RoomType> getH_roomtypes() {
+        return h_roomtypes;
+    }
+
+    public void setH_roomtypes(Set<RoomType> h_roomtypes) {
+        this.h_roomtypes = h_roomtypes;
+    }
+
+    @Override
+    public String toString() {
+        return "Hotel{" +
+                "hotel_id='" + hotel_id + '\'' +
+                ", h_name='" + h_name + '\'' +
+                ", h_address='" + h_address + '\'' +
+                ", h_city='" + h_city + '\'' +
+                ", h_country='" + h_country + '\'' +
+                ", h_telephones=" + h_telephones +
+                ", h_roomtypes=" + h_roomtypes +
+                '}';
     }
 }

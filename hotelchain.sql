@@ -2,10 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14.0
--- Dumped by pg_dump version 14.0
-
--- Started on 2021-12-05 22:53:50
+-- Dumped from database version 12.9 (Ubuntu 12.9-1.pgdg18.04+1)
+-- Dumped by pg_dump version 14.1 (Ubuntu 14.1-1.pgdg18.04+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -23,7 +21,6 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 220 (class 1259 OID 32846)
 -- Name: bills; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -40,7 +37,6 @@ CREATE TABLE public.bills (
 ALTER TABLE public.bills OWNER TO postgres;
 
 --
--- TOC entry 221 (class 1259 OID 41048)
 -- Name: clerk; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -53,7 +49,6 @@ CREATE TABLE public.clerk (
 ALTER TABLE public.clerk OWNER TO postgres;
 
 --
--- TOC entry 214 (class 1259 OID 24845)
 -- Name: employee; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -73,7 +68,6 @@ CREATE TABLE public.employee (
 ALTER TABLE public.employee OWNER TO postgres;
 
 --
--- TOC entry 211 (class 1259 OID 24756)
 -- Name: guest; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -95,7 +89,20 @@ CREATE TABLE public.guest (
 ALTER TABLE public.guest OWNER TO postgres;
 
 --
--- TOC entry 209 (class 1259 OID 24662)
+-- Name: hibernate_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.hibernate_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.hibernate_sequence OWNER TO postgres;
+
+--
 -- Name: hotel; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -111,7 +118,6 @@ CREATE TABLE public.hotel (
 ALTER TABLE public.hotel OWNER TO postgres;
 
 --
--- TOC entry 217 (class 1259 OID 24907)
 -- Name: hotelphone; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -124,7 +130,6 @@ CREATE TABLE public.hotelphone (
 ALTER TABLE public.hotelphone OWNER TO postgres;
 
 --
--- TOC entry 216 (class 1259 OID 24885)
 -- Name: hotelroomtype; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -139,7 +144,6 @@ CREATE TABLE public.hotelroomtype (
 ALTER TABLE public.hotelroomtype OWNER TO postgres;
 
 --
--- TOC entry 215 (class 1259 OID 24850)
 -- Name: manager; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -153,7 +157,6 @@ CREATE TABLE public.manager (
 ALTER TABLE public.manager OWNER TO postgres;
 
 --
--- TOC entry 219 (class 1259 OID 32834)
 -- Name: reservations; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -170,7 +173,6 @@ CREATE TABLE public.reservations (
 ALTER TABLE public.reservations OWNER TO postgres;
 
 --
--- TOC entry 218 (class 1259 OID 32833)
 -- Name: reservations_res_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -185,7 +187,6 @@ ALTER TABLE public.reservations ALTER COLUMN res_id ADD GENERATED ALWAYS AS IDEN
 
 
 --
--- TOC entry 210 (class 1259 OID 24741)
 -- Name: room; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -203,7 +204,6 @@ CREATE TABLE public.room (
 ALTER TABLE public.room OWNER TO postgres;
 
 --
--- TOC entry 212 (class 1259 OID 24798)
 -- Name: roomprice; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -217,7 +217,6 @@ CREATE TABLE public.roomprice (
 ALTER TABLE public.roomprice OWNER TO postgres;
 
 --
--- TOC entry 213 (class 1259 OID 24808)
 -- Name: services; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -231,8 +230,6 @@ CREATE TABLE public.services (
 ALTER TABLE public.services OWNER TO postgres;
 
 --
--- TOC entry 3403 (class 0 OID 32846)
--- Dependencies: 220
 -- Data for Name: bills; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -242,8 +239,6 @@ COPY public.bills (guest_id, res_id, hotel_id, service_type, total_price, "time"
 
 
 --
--- TOC entry 3404 (class 0 OID 41048)
--- Dependencies: 221
 -- Data for Name: clerk; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -252,21 +247,17 @@ COPY public.clerk (employee_id, e_password) FROM stdin;
 
 
 --
--- TOC entry 3397 (class 0 OID 24845)
--- Dependencies: 214
 -- Data for Name: employee; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.employee (employee_id, name, sname, mobile_n, salary, e_category, hotel_id, emp_email, m_w_hours) FROM stdin;
-1	Kairat	Nurtas	8(707) 576 1124	100000,00₸	Manager	Hilton_Ast	Kairat@gmail.com	\N
-2	Aset	Tashenov	8(776) 865 7777	50000,00₸	cleaning staff	Hilton_Ast	Aset@mail.com	\N
-3	Aidana	Askarovna	8(771) 010 9291	50000,00₸	maid	Hilton_Ast	Aidana@gmail.com	\N
+1	Kairat	Nurtas	8(707) 576 1124	 100 000,00₸	Manager	Hilton_Ast	Kairat@gmail.com	\N
+2	Aset	Tashenov	8(776) 865 7777	 50 000,00₸	cleaning staff	Hilton_Ast	Aset@mail.com	\N
+3	Aidana	Askarovna	8(771) 010 9291	 50 000,00₸	maid	Hilton_Ast	Aidana@gmail.com	\N
 \.
 
 
 --
--- TOC entry 3394 (class 0 OID 24756)
--- Dependencies: 211
 -- Data for Name: guest; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -279,23 +270,19 @@ COPY public.guest (guest_id, id_type, id_number, g_address, mobile_n, home_n, g_
 
 
 --
--- TOC entry 3392 (class 0 OID 24662)
--- Dependencies: 209
 -- Data for Name: hotel; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.hotel (hotel_id, h_name, h_address, h_city, h_country) FROM stdin;
-Hilton_Ast	Hilton Astana	Sauran St 46,Nur-Sultan,Kazakhstan	\N	\N
-Hilton_Alm	DoubleTree by Hilton	Dosmukhamedov St 115, Almaty,Kazakhstan	\N	\N
-Hilton_Mos	Hilton Moscow Leningradskaya	Kalanchevskaya Ulitsa, 21/40, Moscow,Russia	\N	\N
-Hilton_NY	Hilton Garden Inn New York	136 W 42nd St, New York, United States	\N	\N
-Hilton_Bev	Waldorf Astoria Beverly Hills	9850 Wilshire Blvd, Beverly Hills,United States	\N	\N
+Hilton_Ast	Hilton Astana	Sauran St 46,Nur-Sultan,Kazakhstan	Astana	Kazakhstan
+Hilton_Alm	DoubleTree by Hilton	Dosmukhamedov St 115, Almaty,Kazakhstan	Almaty	Kazakhstan
+Hilton_Mos	Hilton Moscow Leningradskaya	Kalanchevskaya Ulitsa, 21/40, Moscow,Russia	Moscow	Russia
+Hilton_NY	Hilton Garden Inn New York	136 W 42nd St, New York, United States	New York	USA
+Hilton_Bev	Waldorf Astoria Beverly Hills	9850 Wilshire Blvd, Beverly Hills,United States	Beverli Hills	USA
 \.
 
 
 --
--- TOC entry 3400 (class 0 OID 24907)
--- Dependencies: 217
 -- Data for Name: hotelphone; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -308,22 +295,18 @@ Hilton_Alm	8 (727) 320 4221
 
 
 --
--- TOC entry 3399 (class 0 OID 24885)
--- Dependencies: 216
 -- Data for Name: hotelroomtype; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.hotelroomtype (hotel_id, r_type, size, capacity) FROM stdin;
-Hilton_Ast	single-bedroom	\N	\N
-Hilton_Ast	suite	\N	\N
-Hilton_Ast	penthouse	\N	\N
-Hilton_Ast	double-bedroom	\N	\N
+Hilton_Ast	single-bedroom	50	1
+Hilton_Ast	suite	100	2
+Hilton_Ast	penthouse	260	12
+Hilton_Ast	double-bedroom	75	2
 \.
 
 
 --
--- TOC entry 3398 (class 0 OID 24850)
--- Dependencies: 215
 -- Data for Name: manager; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -333,8 +316,6 @@ COPY public.manager (employee_id, hotel_id, e_password) FROM stdin;
 
 
 --
--- TOC entry 3402 (class 0 OID 32834)
--- Dependencies: 219
 -- Data for Name: reservations; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -346,8 +327,6 @@ COPY public.reservations (res_id, guest_id, hotel_id, r_number, check_in, check_
 
 
 --
--- TOC entry 3393 (class 0 OID 24741)
--- Dependencies: 210
 -- Data for Name: room; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -361,44 +340,45 @@ COPY public.room (r_number, hotel_id, r_type, r_floor, price_id, "isClean", "isO
 
 
 --
--- TOC entry 3395 (class 0 OID 24798)
--- Dependencies: 212
 -- Data for Name: roomprice; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.roomprice (price_id, dow, price) FROM stdin;
-1	week	70000,00₸
-2	weekend	100000,00₸
-3	week	100000,00₸
-4	weekend	150000,00₸
-5	week	150000,00₸
-6	weekend	200000,00₸
-7	week	500000,00₸
-8	weekend	1000000,00₸
+1	week	 70 000,00₸
+2	weekend	 100 000,00₸
+3	week	 100 000,00₸
+4	weekend	 150 000,00₸
+5	week	 150 000,00₸
+6	weekend	 200 000,00₸
+7	week	 500 000,00₸
+8	weekend	 1 000 000,00₸
 \.
 
 
 --
--- TOC entry 3396 (class 0 OID 24808)
--- Dependencies: 213
 -- Data for Name: services; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.services (service_type, hotel_id, s_price) FROM stdin;
-Pool	Hilton_Ast	12000,00₸
-SPA	Hilton_Ast	20000,00₸
-Conference facilities	Hilton_Ast	50000,00₸
-Breakfast	Hilton_Ast	10000,00₸
-Cinema	Hilton_Ast	5000,00₸
-Restaurant	Hilton_Ast	30000,00₸
-Snacks_in_the_room	Hilton_Ast	5000,00₸
-Clean_room	Hilton_Ast	0,00₸
+Pool	Hilton_Ast	 12 000,00₸
+SPA	Hilton_Ast	 20 000,00₸
+Conference facilities	Hilton_Ast	 50 000,00₸
+Breakfast	Hilton_Ast	 10 000,00₸
+Cinema	Hilton_Ast	 5 000,00₸
+Restaurant	Hilton_Ast	 30 000,00₸
+Snacks_in_the_room	Hilton_Ast	 5 000,00₸
+Clean_room	Hilton_Ast	 0,00₸
 \.
 
 
 --
--- TOC entry 3410 (class 0 OID 0)
--- Dependencies: 218
+-- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.hibernate_sequence', 1, false);
+
+
+--
 -- Name: reservations_res_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -406,7 +386,6 @@ SELECT pg_catalog.setval('public.reservations_res_id_seq', 3, true);
 
 
 --
--- TOC entry 3235 (class 2606 OID 32850)
 -- Name: bills bills_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -415,7 +394,6 @@ ALTER TABLE ONLY public.bills
 
 
 --
--- TOC entry 3237 (class 2606 OID 41052)
 -- Name: clerk clerk_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -424,7 +402,6 @@ ALTER TABLE ONLY public.clerk
 
 
 --
--- TOC entry 3223 (class 2606 OID 24849)
 -- Name: employee employee_id; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -433,7 +410,6 @@ ALTER TABLE ONLY public.employee
 
 
 --
--- TOC entry 3215 (class 2606 OID 24929)
 -- Name: guest guest_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -442,7 +418,6 @@ ALTER TABLE ONLY public.guest
 
 
 --
--- TOC entry 3209 (class 2606 OID 24666)
 -- Name: hotel hotel_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -451,7 +426,6 @@ ALTER TABLE ONLY public.hotel
 
 
 --
--- TOC entry 3229 (class 2606 OID 24911)
 -- Name: hotelphone hotelphone_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -460,7 +434,6 @@ ALTER TABLE ONLY public.hotelphone
 
 
 --
--- TOC entry 3227 (class 2606 OID 24889)
 -- Name: hotelroomtype hotelroomtype_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -469,7 +442,6 @@ ALTER TABLE ONLY public.hotelroomtype
 
 
 --
--- TOC entry 3225 (class 2606 OID 24854)
 -- Name: manager manager_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -478,7 +450,6 @@ ALTER TABLE ONLY public.manager
 
 
 --
--- TOC entry 3217 (class 2606 OID 24802)
 -- Name: roomprice price_id; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -487,7 +458,6 @@ ALTER TABLE ONLY public.roomprice
 
 
 --
--- TOC entry 3211 (class 2606 OID 24777)
 -- Name: room r_number; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -496,7 +466,6 @@ ALTER TABLE ONLY public.room
 
 
 --
--- TOC entry 3231 (class 2606 OID 32845)
 -- Name: reservations res_id; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -505,7 +474,6 @@ ALTER TABLE ONLY public.reservations
 
 
 --
--- TOC entry 3233 (class 2606 OID 32838)
 -- Name: reservations reservations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -514,7 +482,6 @@ ALTER TABLE ONLY public.reservations
 
 
 --
--- TOC entry 3213 (class 2606 OID 24745)
 -- Name: room room_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -523,7 +490,6 @@ ALTER TABLE ONLY public.room
 
 
 --
--- TOC entry 3219 (class 2606 OID 24819)
 -- Name: services service_type; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -532,7 +498,6 @@ ALTER TABLE ONLY public.services
 
 
 --
--- TOC entry 3221 (class 2606 OID 24812)
 -- Name: services services_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -541,7 +506,6 @@ ALTER TABLE ONLY public.services
 
 
 --
--- TOC entry 3242 (class 2606 OID 24855)
 -- Name: manager employee_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -550,7 +514,6 @@ ALTER TABLE ONLY public.manager
 
 
 --
--- TOC entry 3252 (class 2606 OID 41053)
 -- Name: clerk employee_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -559,7 +522,6 @@ ALTER TABLE ONLY public.clerk
 
 
 --
--- TOC entry 3251 (class 2606 OID 32861)
 -- Name: bills guest_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -568,7 +530,6 @@ ALTER TABLE ONLY public.bills
 
 
 --
--- TOC entry 3246 (class 2606 OID 41033)
 -- Name: reservations guest_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -577,7 +538,6 @@ ALTER TABLE ONLY public.reservations
 
 
 --
--- TOC entry 3238 (class 2606 OID 24746)
 -- Name: room hotel_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -586,7 +546,6 @@ ALTER TABLE ONLY public.room
 
 
 --
--- TOC entry 3240 (class 2606 OID 24813)
 -- Name: services hotel_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -595,7 +554,6 @@ ALTER TABLE ONLY public.services
 
 
 --
--- TOC entry 3243 (class 2606 OID 24860)
 -- Name: manager hotel_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -604,7 +562,6 @@ ALTER TABLE ONLY public.manager
 
 
 --
--- TOC entry 3241 (class 2606 OID 24962)
 -- Name: employee hotel_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -613,7 +570,6 @@ ALTER TABLE ONLY public.employee
 
 
 --
--- TOC entry 3250 (class 2606 OID 32856)
 -- Name: bills hotel_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -622,7 +578,6 @@ ALTER TABLE ONLY public.bills
 
 
 --
--- TOC entry 3245 (class 2606 OID 32883)
 -- Name: hotelphone hotel_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -631,7 +586,6 @@ ALTER TABLE ONLY public.hotelphone
 
 
 --
--- TOC entry 3244 (class 2606 OID 41024)
 -- Name: hotelroomtype hotel_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -640,7 +594,6 @@ ALTER TABLE ONLY public.hotelroomtype
 
 
 --
--- TOC entry 3247 (class 2606 OID 41038)
 -- Name: reservations hotel_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -649,7 +602,6 @@ ALTER TABLE ONLY public.reservations
 
 
 --
--- TOC entry 3239 (class 2606 OID 24803)
 -- Name: room price_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -658,7 +610,6 @@ ALTER TABLE ONLY public.room
 
 
 --
--- TOC entry 3248 (class 2606 OID 41043)
 -- Name: reservations r_number; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -667,7 +618,6 @@ ALTER TABLE ONLY public.reservations
 
 
 --
--- TOC entry 3249 (class 2606 OID 32851)
 -- Name: bills res_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -675,7 +625,13 @@ ALTER TABLE ONLY public.bills
     ADD CONSTRAINT res_id FOREIGN KEY (res_id) REFERENCES public.reservations(res_id);
 
 
--- Completed on 2021-12-05 22:53:50
+--
+-- Name: room room_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.room
+    ADD CONSTRAINT room_fk FOREIGN KEY (hotel_id, r_type) REFERENCES public.hotelroomtype(hotel_id, r_type) ON UPDATE CASCADE ON DELETE SET NULL;
+
 
 --
 -- PostgreSQL database dump complete

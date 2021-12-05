@@ -1,5 +1,7 @@
 package nu.swe.hotel_chain.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -18,6 +20,7 @@ public class Telephone implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "hotel_id", nullable = false)
+    @JsonBackReference
     private Hotel hotel;
 
     /*Constructors*/
@@ -57,9 +60,9 @@ public class Telephone implements Serializable {
     /*ToString()*/
     @Override
     public String toString() {
-        return "Telephone{\n" +
+        return "Telephone{" +
                 "hotel_id=" + hotel_id +
-                ",\n h_phone='" + h_phone + '\'' +
-                "\n}\n";
+                ",h_phone='" + h_phone + '\'' +
+                "}";
     }
 }
