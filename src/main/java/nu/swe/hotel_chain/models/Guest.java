@@ -160,4 +160,21 @@ public class Guest {
     public void setgPassword(String gPassword) {
         this.gPassword = gPassword;
     }
+
+    @Override
+    public String toString() {
+        return "Guest{" +
+                "gId=" + gId +
+                ", idType='" + idType + '\'' +
+                ", idNumber='" + idNumber + '\'' +
+                ", gAddress='" + gAddress + '\'' +
+                ", mobileNumber='" + mobileNumber + '\'' +
+                ", homeNumber='" + homeNumber + '\'' +
+                ", gName='" + gName + '\'' +
+                ", gCategory='" + gCategory + '\'' +
+                ", gSname='" + gSname + '\'' +
+                ", gEmail='" + gEmail + '\'' +
+                ", gPassword='" + gPassword + '\'' +
+                '}';
+    }
 }

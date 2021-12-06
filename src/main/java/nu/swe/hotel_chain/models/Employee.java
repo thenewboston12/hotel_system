@@ -1,13 +1,14 @@
 package nu.swe.hotel_chain.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+
 
 @Entity
 @Table(name = "employee")
 public class Employee {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_id")
@@ -37,22 +38,35 @@ public class Employee {
     @Column(name = "m_w_hours")
     private int e_hours;
 
-    @ManyToOne( fetch = FetchType.LAZY)
-    @JoinColumn(name = "hotel_id")
-    private Hotel hotel;
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "hotel_id", unique = true, nullable = false, insertable = false, updatable = false)
+    @JsonManagedReference
+    private Hotel hotel_id;
 
-
-    public String getHName() {
-        return hotel.getH_name();
+    public Employee() {
     }
 
-    public String getHid() {
-        return hotel.getHotel_id();
+    public Employee(Integer emp_id, String e_name, String e_sname, String mobile, float salary, Role e_role, String e_email, int e_hours) {
+        this.emp_id = emp_id;
+        this.e_name = e_name;
+        this.e_sname = e_sname;
+        this.mobile = mobile;
+        this.salary = salary;
+        this.e_role = e_role;
+        this.e_email = e_email;
+        this.e_hours = e_hours;
     }
 
-    public String getHCity() {
-        return hotel.getH_city();
+    public Employee(String e_name, String e_sname, String mobile, float salary, Role e_role, String e_email, int e_hours) {
+        this.e_name = e_name;
+        this.e_sname = e_sname;
+        this.mobile = mobile;
+        this.salary = salary;
+        this.e_role = e_role;
+        this.e_email = e_email;
+        this.e_hours = e_hours;
     }
+
 
 
 
@@ -96,18 +110,15 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Role getE_category() {
+    public Role getE_role() {
         return e_role;
     }
 
-    public void setE_category(Role e_category) {
-        this.e_role = e_category;
+    public void setE_role(Role e_role) {
+        this.e_role = e_role;
     }
 
-    public String getE_email() {
-
-        return e_email;
-    }
+    public String getE_email() {return e_email; }
 
     public void setE_email(String e_email) {
         this.e_email = e_email;
@@ -121,32 +132,26 @@ public class Employee {
         this.e_hours = e_hours;
     }
 
-
-
-    public Employee(Integer emp_id, String e_name, String e_sname, String mobile, float salary, Role e_role, String e_email, int e_hours, Hotel hotel) {
-        this.emp_id = emp_id;
-        this.e_name = e_name;
-        this.e_sname = e_sname;
-        this.mobile = mobile;
-        this.salary = salary;
-        this.e_role = e_role;
-        this.e_email = e_email;
-        this.e_hours = e_hours;
-        this.hotel = hotel;
+    public Hotel getHotel_id() {
+        return hotel_id;
     }
 
-    public Employee(String e_name, String e_sname, String mobile, float salary, Role e_role, String e_email, int e_hours,  Hotel hotel) {
-        this.e_name = e_name;
-        this.e_sname = e_sname;
-        this.mobile = mobile;
-        this.salary = salary;
-        this.e_role = e_role;
-        this.e_email = e_email;
-        this.e_hours = e_hours;
-        this.hotel = hotel;
+    public void setHotel_id(Hotel hotel_id) {
+        this.hotel_id = hotel_id;
     }
 
-    public Employee() {
-
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "emp_id=" + emp_id +
+                ", e_name='" + e_name + '\'' +
+                ", e_sname='" + e_sname + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", salary=" + salary +
+                ", e_role=" + e_role +
+                ", e_email='" + e_email + '\'' +
+                ", e_hours=" + e_hours +
+                ", hotel_id=" + hotel_id +
+                '}';
     }
 }
