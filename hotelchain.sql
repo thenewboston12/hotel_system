@@ -16,6 +16,19 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: erole; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.erole AS ENUM (
+    'Manager',
+    'Staff',
+    'Clerk'
+);
+
+
+ALTER TYPE public.erole OWNER TO postgres;
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -30,7 +43,7 @@ CREATE TABLE public.bills (
     hotel_id character varying(10) NOT NULL,
     service_type character varying(30),
     total_price real,
-    "time" date
+    "time" timestamp without time zone
 );
 
 
@@ -58,7 +71,7 @@ CREATE TABLE public.employee (
     sname character varying(40),
     mobile_n character varying(20),
     salary real,
-    e_category character varying(30),
+    e_category public.erole,
     hotel_id character varying(10),
     emp_email character varying(40),
     m_w_hours integer
@@ -73,8 +86,7 @@ ALTER TABLE public.employee OWNER TO postgres;
 
 CREATE TABLE public.guest (
     guest_id integer NOT NULL,
-    id_type character varying(20),
-    id_number bigint,
+    id_type character varying(30),
     g_address character varying(50),
     mobile_n character varying(20),
     home_n character varying(20),
@@ -82,7 +94,8 @@ CREATE TABLE public.guest (
     g_name character varying(30),
     g_surname character varying(40),
     g_email character varying(40),
-    g_password character varying(30)
+    g_password character varying(30),
+    id_number character varying(30)
 );
 
 
@@ -194,7 +207,6 @@ CREATE TABLE public.room (
     hotel_id character varying(10) NOT NULL,
     r_type character varying(20) NOT NULL,
     r_floor integer,
-    price_id integer,
     is_clean boolean,
     is_occupied boolean
 );
@@ -207,13 +219,33 @@ ALTER TABLE public.room OWNER TO postgres;
 --
 
 CREATE TABLE public.roomprice (
-    price_id integer NOT NULL,
-    dow character varying(10),
-    price real
+    hotel_id character varying(10) NOT NULL,
+    r_type character varying(20) NOT NULL,
+    moday real,
+    tuesday real,
+    wednsday real,
+    thursday real,
+    friday real,
+    saturday real,
+    sunday real
 );
 
 
 ALTER TABLE public.roomprice OWNER TO postgres;
+
+--
+-- Name: schedule; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.schedule (
+    employee_id integer NOT NULL,
+    r_number integer NOT NULL,
+    start_time timestamp without time zone,
+    end_time timestamp without time zone
+);
+
+
+ALTER TABLE public.schedule OWNER TO postgres;
 
 --
 -- Name: services; Type: TABLE; Schema: public; Owner: postgres
@@ -233,7 +265,7 @@ ALTER TABLE public.services OWNER TO postgres;
 --
 
 COPY public.bills (guest_id, res_id, hotel_id, service_type, total_price, "time") FROM stdin;
-4	3	Hilton_Ast	Breakfast	\N	2021-12-02
+4	3	Hilton_Ast	Breakfast	10000	2021-12-25 10:23:54
 \.
 
 
@@ -242,6 +274,8 @@ COPY public.bills (guest_id, res_id, hotel_id, service_type, total_price, "time"
 --
 
 COPY public.clerk (employee_id, e_password) FROM stdin;
+2	pass4
+3	pass5
 \.
 
 
@@ -251,8 +285,8 @@ COPY public.clerk (employee_id, e_password) FROM stdin;
 
 COPY public.employee (employee_id, name, sname, mobile_n, salary, e_category, hotel_id, emp_email, m_w_hours) FROM stdin;
 1	Kairat	Nurtas	8(707) 576 1124	100000	Manager	Hilton_Ast	Kairat@gmail.com	12
-2	Aset	Tashenov	8(776) 865 7777	50000	cleaning staff	Hilton_Ast	Aset@mail.com	2
-3	Aidana	Askarovna	8(771) 010 9291	50000	maid	Hilton_Ast	Aidana@gmail.com	12
+2	Aset	Tashenov	8(776) 865 7777	50000	Staff	Hilton_Ast	Aset@mail.com	2
+3	Aidana	Askarovna	8(771) 010 9291	50000	Staff	Hilton_Ast	Aidana@gmail.com	12
 \.
 
 
@@ -260,11 +294,11 @@ COPY public.employee (employee_id, name, sname, mobile_n, salary, e_category, ho
 -- Data for Name: guest; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.guest (guest_id, id_type, id_number, g_address, mobile_n, home_n, g_category, g_name, g_surname, g_email, g_password) FROM stdin;
-2	National ID	2312203	Abai St18,Almaty,Kazakhstan	8(771)589 8712	\N	Ordinary	Ainur	Nurbek	\N	\N
-3	Birth Certificate	3123123	Abai St18,Almaty,Kazakhstan	\N	\N	Ordinary	Berik	Nurbek	\N	\N
-1	National ID	101089	Abai St18,Almaty,Kazakhstan	8(771)589 2371	\N	Ordinary	Azamat	Nurbek	azamat.nurbek@gmail.com	\N
-4	Passport	2011233	Lenina19,Moscow,Russia	7 (277)001 1111	\N	VIP	Stas	Komisarenko	stas.komisarenko@gmail.com	\N
+COPY public.guest (guest_id, id_type, g_address, mobile_n, home_n, g_category, g_name, g_surname, g_email, g_password, id_number) FROM stdin;
+2	National ID	Abai St18,Almaty,Kazakhstan	8(771)589 8712	\N	Ordinary	Ainur	Nurbek	\N	\N	\N
+3	Birth Certificate	Abai St18,Almaty,Kazakhstan	\N	\N	Ordinary	Berik	Nurbek	\N	\N	\N
+1	National ID	Abai St18,Almaty,Kazakhstan	8(771)589 2371	\N	Ordinary	Azamat	Nurbek	azamat.nurbek@gmail.com	\N	\N
+4	Passport	Lenina19,Moscow,Russia	7 (277)001 1111	\N	VIP	Stas	Komisarenko	stas.komisarenko@gmail.com	\N	\N
 \.
 
 
@@ -278,6 +312,7 @@ Hilton_Alm	DoubleTree by Hilton	Dosmukhamedov St 115, Almaty,Kazakhstan	Almaty	K
 Hilton_Mos	Hilton Moscow Leningradskaya	Kalanchevskaya Ulitsa, 21/40, Moscow,Russia	Moscow	Russia
 Hilton_NY	Hilton Garden Inn New York	136 W 42nd St, New York, United States	New York	USA
 Hilton_Bev	Waldorf Astoria Beverly Hills	9850 Wilshire Blvd, Beverly Hills,United States	Beverli Hills	USA
+Prime_Ast	Prime Hotel Astana	Kabanbay batyr, Nur-Sultan, 53	Astana	Kazkahstan
 \.
 
 
@@ -302,6 +337,10 @@ Hilton_Ast	single-bedroom	50	1
 Hilton_Ast	suite	100	2
 Hilton_Ast	penthouse	260	12
 Hilton_Ast	double-bedroom	75	2
+Prime_Ast	single-bedroom	30	1
+Prime_Ast	suite	75	2
+Prime_Ast	penthouse	150	8
+Prime_Ast	double-bedroom	50	2
 \.
 
 
@@ -323,6 +362,8 @@ COPY public.reservations (res_id, guest_id, hotel_id, r_number, check_in, check_
 1	1	Hilton_Ast	202	2021-12-25	2021-12-29
 2	1	Hilton_Ast	203	2021-12-15	2021-12-19
 3	4	Hilton_Ast	305	2021-12-29	2021-12-31
+4	2	Prime_Ast	212	2021-12-27	2021-12-31
+5	3	Prime_Ast	312	2021-12-25	2021-12-29
 \.
 
 
@@ -330,12 +371,15 @@ COPY public.reservations (res_id, guest_id, hotel_id, r_number, check_in, check_
 -- Data for Name: room; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.room (r_number, hotel_id, r_type, r_floor, price_id, is_clean, is_occupied) FROM stdin;
-201	Hilton_Ast	single-bedroom	2	1	t	f
-305	Hilton_Ast	suite	3	6	f	f
-501	Hilton_Ast	penthouse	5	7	t	f
-202	Hilton_Ast	single-bedroom	2	1	f	f
-203	Hilton_Ast	single-bedroom	2	1	f	f
+COPY public.room (r_number, hotel_id, r_type, r_floor, is_clean, is_occupied) FROM stdin;
+201	Hilton_Ast	single-bedroom	2	t	f
+305	Hilton_Ast	suite	3	f	f
+501	Hilton_Ast	penthouse	5	t	f
+202	Hilton_Ast	single-bedroom	2	f	f
+203	Hilton_Ast	single-bedroom	2	f	f
+212	Prime_Ast	single-bedroom	2	f	f
+312	Prime_Ast	single-bedroom	3	f	t
+512	Prime_Ast	double-bedroom	5	t	t
 \.
 
 
@@ -343,15 +387,15 @@ COPY public.room (r_number, hotel_id, r_type, r_floor, price_id, is_clean, is_oc
 -- Data for Name: roomprice; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.roomprice (price_id, dow, price) FROM stdin;
-1	week	70000
-2	weekend	100000
-3	week	100000
-4	weekend	150000
-5	week	150000
-6	weekend	200000
-7	week	500000
-8	weekend	1e+06
+COPY public.roomprice (hotel_id, r_type, moday, tuesday, wednsday, thursday, friday, saturday, sunday) FROM stdin;
+\.
+
+
+--
+-- Data for Name: schedule; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.schedule (employee_id, r_number, start_time, end_time) FROM stdin;
 \.
 
 
@@ -382,7 +426,7 @@ SELECT pg_catalog.setval('public.hibernate_sequence', 1, false);
 -- Name: reservations_res_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.reservations_res_id_seq', 3, true);
+SELECT pg_catalog.setval('public.reservations_res_id_seq', 5, true);
 
 
 --
@@ -442,14 +486,6 @@ ALTER TABLE ONLY public.hotelroomtype
 
 
 --
--- Name: roomprice price_id; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.roomprice
-    ADD CONSTRAINT price_id PRIMARY KEY (price_id);
-
-
---
 -- Name: room r_number; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -479,6 +515,22 @@ ALTER TABLE ONLY public.reservations
 
 ALTER TABLE ONLY public.room
     ADD CONSTRAINT room_pkey PRIMARY KEY (r_number, hotel_id);
+
+
+--
+-- Name: roomprice roomprice_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.roomprice
+    ADD CONSTRAINT roomprice_pkey PRIMARY KEY (r_type, hotel_id);
+
+
+--
+-- Name: schedule schedule_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.schedule
+    ADD CONSTRAINT schedule_pk PRIMARY KEY (employee_id, r_number);
 
 
 --
@@ -562,14 +614,6 @@ ALTER TABLE ONLY public.employee
 
 
 --
--- Name: bills hotel_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.bills
-    ADD CONSTRAINT hotel_id FOREIGN KEY (hotel_id) REFERENCES public.hotel(hotel_id);
-
-
---
 -- Name: hotelphone hotel_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -586,14 +630,6 @@ ALTER TABLE ONLY public.hotelroomtype
 
 
 --
--- Name: room price_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.room
-    ADD CONSTRAINT price_id FOREIGN KEY (price_id) REFERENCES public.roomprice(price_id) NOT VALID;
-
-
---
 -- Name: reservations reservations_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -607,6 +643,30 @@ ALTER TABLE ONLY public.reservations
 
 ALTER TABLE ONLY public.room
     ADD CONSTRAINT room_fk FOREIGN KEY (hotel_id, r_type) REFERENCES public.hotelroomtype(hotel_id, r_type) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
+-- Name: roomprice roomprice_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.roomprice
+    ADD CONSTRAINT roomprice_fk FOREIGN KEY (r_type, hotel_id) REFERENCES public.hotelroomtype(r_type, hotel_id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
+-- Name: schedule schedule_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.schedule
+    ADD CONSTRAINT schedule_fk FOREIGN KEY (r_number) REFERENCES public.room(r_number);
+
+
+--
+-- Name: schedule schedule_fk_1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.schedule
+    ADD CONSTRAINT schedule_fk_1 FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id);
 
 
 --
