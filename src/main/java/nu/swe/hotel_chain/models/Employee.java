@@ -38,15 +38,13 @@ public class Employee {
     @Column(name = "m_w_hours")
     private int e_hours;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "hotel_id", unique = true, nullable = false, insertable = false, updatable = false)
-    @JsonManagedReference
-    private Hotel hotel_id;
+    @Column(name = "hotel_id")
+    private String hotel_id;
 
     public Employee() {
     }
 
-    public Employee(Integer emp_id, String e_name, String e_sname, String mobile, float salary, Role e_role, String e_email, int e_hours) {
+    public Employee(Integer emp_id, String e_name, String e_sname, String mobile, float salary, Role e_role, String e_email, int e_hours, String hotel_id) {
         this.emp_id = emp_id;
         this.e_name = e_name;
         this.e_sname = e_sname;
@@ -55,9 +53,10 @@ public class Employee {
         this.e_role = e_role;
         this.e_email = e_email;
         this.e_hours = e_hours;
+        this.hotel_id = hotel_id;
     }
 
-    public Employee(String e_name, String e_sname, String mobile, float salary, Role e_role, String e_email, int e_hours) {
+    public Employee(String e_name, String e_sname, String mobile, float salary, Role e_role, String e_email, int e_hours, String hotel_id) {
         this.e_name = e_name;
         this.e_sname = e_sname;
         this.mobile = mobile;
@@ -65,10 +64,8 @@ public class Employee {
         this.e_role = e_role;
         this.e_email = e_email;
         this.e_hours = e_hours;
+        this.hotel_id = hotel_id;
     }
-
-
-
 
     public Integer getEmp_id() {
         return emp_id;
@@ -132,11 +129,11 @@ public class Employee {
         this.e_hours = e_hours;
     }
 
-    public Hotel getHotel_id() {
+    public String getHotel_id() {
         return hotel_id;
     }
 
-    public void setHotel_id(Hotel hotel_id) {
+    public void setHotel_id(String hotel_id) {
         this.hotel_id = hotel_id;
     }
 
