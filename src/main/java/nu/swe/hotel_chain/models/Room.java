@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "room")
+@IdClass(RoomId.class)
 public class Room implements Serializable {
     @Id
     @Column(name = "r_number")

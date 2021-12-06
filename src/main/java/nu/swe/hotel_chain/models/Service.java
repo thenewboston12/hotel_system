@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "services")
+@IdClass(ServiceId.class)
 public class Service implements Serializable {
     @Id
     @Column(name = "service_type")

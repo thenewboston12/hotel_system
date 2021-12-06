@@ -10,6 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "hotelroomtype")
+@IdClass(RoomTypeId.class)
 public class RoomType implements Serializable {
     /*Fields*/
     @Id
@@ -27,7 +28,7 @@ public class RoomType implements Serializable {
     private int capacity;
 
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "hotel_id", nullable = false, unique = true)
+    @JoinColumn(name = "hotel_id", nullable = false, unique = true, insertable = false, updatable = false)
     @JsonBackReference
     private Hotel hotel;
 
