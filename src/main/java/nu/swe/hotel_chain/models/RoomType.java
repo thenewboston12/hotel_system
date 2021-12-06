@@ -36,6 +36,16 @@ public class RoomType implements Serializable {
     @JsonManagedReference
     private Set<Room> rooms = new HashSet<>();
 
+    public RoomType(){}
+
+    public RoomType(String hotel_id, String r_type, double size, int capacity) {
+        this.hotel_id = hotel_id;
+        this.r_type = r_type;
+        this.size = size;
+        this.capacity = capacity;
+    }
+
+
     public String getHotel_id() {
         return hotel_id;
     }

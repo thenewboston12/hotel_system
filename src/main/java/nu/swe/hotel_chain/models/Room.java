@@ -23,9 +23,6 @@ public class Room implements Serializable {
     @Column(name = "r_floor")
     private int r_floor;
 
-    @Column(name = "price_id")
-    private int price_id;
-
     @Column(name = "is_clean")
     private boolean is_clean;
 
@@ -39,6 +36,17 @@ public class Room implements Serializable {
     })
     @JsonBackReference
     private RoomType roomType;
+
+    public Room(){}
+
+    public Room(int r_number, String hotel_id, String r_type, int r_floor, boolean is_clean, boolean is_occupied) {
+        this.r_number = r_number;
+        this.hotel_id = hotel_id;
+        this.r_type = r_type;
+        this.r_floor = r_floor;
+        this.is_clean = is_clean;
+        this.is_occupied = is_occupied;
+    }
 
     public int getR_number() {
         return r_number;
@@ -72,14 +80,6 @@ public class Room implements Serializable {
         this.r_floor = r_floor;
     }
 
-    public int getPrice_id() {
-        return price_id;
-    }
-
-    public void setPrice_id(int price_id) {
-        this.price_id = price_id;
-    }
-
     public boolean isIs_clean() {
         return is_clean;
     }
@@ -111,7 +111,6 @@ public class Room implements Serializable {
                 ", hotel_id='" + hotel_id + '\'' +
                 ", r_type='" + r_type + '\'' +
                 ", r_floor=" + r_floor +
-                ", price_id=" + price_id +
                 ", is_clean=" + is_clean +
                 ", is_occupied=" + is_occupied +
                 '}';
