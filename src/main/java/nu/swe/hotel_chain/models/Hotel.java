@@ -35,6 +35,10 @@ public class Hotel {
     @JsonManagedReference
     private Set<RoomType> h_roomtypes = new HashSet<>();
 
+    @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<Service> h_services = new HashSet<>();
+
     public Hotel(){
 
     }
@@ -110,6 +114,14 @@ public class Hotel {
         this.h_roomtypes = h_roomtypes;
     }
 
+    public Set<Service> getH_services() {
+        return h_services;
+    }
+
+    public void setH_services(Set<Service> h_services) {
+        this.h_services = h_services;
+    }
+
     @Override
     public String toString() {
         return "Hotel{" +
@@ -120,6 +132,7 @@ public class Hotel {
                 ", h_country='" + h_country + '\'' +
                 ", h_telephones=" + h_telephones +
                 ", h_roomtypes=" + h_roomtypes +
+                ", h_services=" + h_services +
                 '}';
     }
 }

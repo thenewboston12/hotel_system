@@ -19,4 +19,8 @@ public class HotelService {
     public List<Hotel> getHotels(){
         return hotelRepository.findAll();
     }
+
+    public List<Hotel> getHotel(String hotel_id){
+        return hotelRepository.findByHotel_id(hotel_id);
+    }
 }

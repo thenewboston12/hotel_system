@@ -29,7 +29,7 @@ CREATE TABLE public.bills (
     res_id integer NOT NULL,
     hotel_id character varying(10) NOT NULL,
     service_type character varying(30),
-    total_price money,
+    total_price float4,
     "time" date
 );
 
@@ -57,7 +57,7 @@ CREATE TABLE public.employee (
     name character varying(30),
     sname character varying(40),
     mobile_n character varying(20),
-    salary money,
+    salary float4,
     e_category character varying(30),
     hotel_id character varying(10),
     emp_email character varying(40),
@@ -196,8 +196,8 @@ CREATE TABLE public.room (
     r_type character varying(20) NOT NULL,
     r_floor integer,
     price_id integer,
-    "isClean" boolean,
-    "isOccupied" boolean
+    is_clean boolean,
+    is_occupied boolean
 );
 
 
@@ -210,7 +210,7 @@ ALTER TABLE public.room OWNER TO postgres;
 CREATE TABLE public.roomprice (
     price_id integer NOT NULL,
     dow character varying(10),
-    price money
+    price float4
 );
 
 
@@ -223,7 +223,7 @@ ALTER TABLE public.roomprice OWNER TO postgres;
 CREATE TABLE public.services (
     service_type character varying(30) NOT NULL,
     hotel_id character varying(10) NOT NULL,
-    s_price money
+    s_price float4
 );
 
 
@@ -251,9 +251,9 @@ COPY public.clerk (employee_id, e_password) FROM stdin;
 --
 
 COPY public.employee (employee_id, name, sname, mobile_n, salary, e_category, hotel_id, emp_email, m_w_hours) FROM stdin;
-1	Kairat	Nurtas	8(707) 576 1124	 100 000,00₸	Manager	Hilton_Ast	Kairat@gmail.com	\N
-2	Aset	Tashenov	8(776) 865 7777	 50 000,00₸	cleaning staff	Hilton_Ast	Aset@mail.com	\N
-3	Aidana	Askarovna	8(771) 010 9291	 50 000,00₸	maid	Hilton_Ast	Aidana@gmail.com	\N
+1	Kairat	Nurtas	8(707) 576 1124	 100000.00	Manager	Hilton_Ast	Kairat@gmail.com	\N
+2	Aset	Tashenov	8(776) 865 7777	 50000.00	cleaning staff	Hilton_Ast	Aset@mail.com	\N
+3	Aidana	Askarovna	8(771) 010 9291	 50000.00	maid	Hilton_Ast	Aidana@gmail.com	\N
 \.
 
 
@@ -330,7 +330,7 @@ COPY public.reservations (res_id, guest_id, hotel_id, r_number, check_in, check_
 -- Data for Name: room; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.room (r_number, hotel_id, r_type, r_floor, price_id, "isClean", "isOccupied") FROM stdin;
+COPY public.room (r_number, hotel_id, r_type, r_floor, price_id, is_clean, is_occupied) FROM stdin;
 201	Hilton_Ast	single-bedroom	2	1	t	\N
 202	Hilton_Ast	single-bedroom	2	1	f	\N
 203	Hilton_Ast	single-bedroom	2	1	f	\N
@@ -344,14 +344,14 @@ COPY public.room (r_number, hotel_id, r_type, r_floor, price_id, "isClean", "isO
 --
 
 COPY public.roomprice (price_id, dow, price) FROM stdin;
-1	week	 70 000,00₸
-2	weekend	 100 000,00₸
-3	week	 100 000,00₸
-4	weekend	 150 000,00₸
-5	week	 150 000,00₸
-6	weekend	 200 000,00₸
-7	week	 500 000,00₸
-8	weekend	 1 000 000,00₸
+1	week	 70000.00
+2	weekend	 100000.00
+3	week	 100000.00
+4	weekend	 150000.00
+5	week	 150000.00
+6	weekend	 200000.00
+7	week	 500000.00
+8	weekend	 1000000.00
 \.
 
 
@@ -360,14 +360,14 @@ COPY public.roomprice (price_id, dow, price) FROM stdin;
 --
 
 COPY public.services (service_type, hotel_id, s_price) FROM stdin;
-Pool	Hilton_Ast	 12 000,00₸
-SPA	Hilton_Ast	 20 000,00₸
-Conference facilities	Hilton_Ast	 50 000,00₸
-Breakfast	Hilton_Ast	 10 000,00₸
-Cinema	Hilton_Ast	 5 000,00₸
-Restaurant	Hilton_Ast	 30 000,00₸
-Snacks_in_the_room	Hilton_Ast	 5 000,00₸
-Clean_room	Hilton_Ast	 0,00₸
+Pool	Hilton_Ast	 12000.00
+SPA	Hilton_Ast	 20000.00
+Conference facilities	Hilton_Ast	 50000.00
+Breakfast	Hilton_Ast	 10000.00
+Cinema	Hilton_Ast	 5000.00
+Restaurant	Hilton_Ast	 30000.00
+Snacks_in_the_room	Hilton_Ast	 5000.00
+Clean_room	Hilton_Ast	 0.00
 \.
 
 
@@ -535,14 +535,6 @@ ALTER TABLE ONLY public.bills
 
 ALTER TABLE ONLY public.reservations
     ADD CONSTRAINT guest_id FOREIGN KEY (guest_id) REFERENCES public.guest(guest_id) NOT VALID;
-
-
---
--- Name: room hotel_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.room
-    ADD CONSTRAINT hotel_id FOREIGN KEY (hotel_id) REFERENCES public.hotel(hotel_id) ON UPDATE CASCADE ON DELETE SET NULL;
 
 
 --
