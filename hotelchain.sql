@@ -29,6 +29,20 @@ CREATE TYPE public.erole AS ENUM (
 
 ALTER TYPE public.erole OWNER TO postgres;
 
+--
+-- Name: role; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.role AS ENUM (
+    'Guest',
+    'Staff',
+    'Clerk',
+    'Manager'
+);
+
+
+ALTER TYPE public.role OWNER TO postgres;
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -48,18 +62,6 @@ CREATE TABLE public.bills (
 
 
 ALTER TABLE public.bills OWNER TO postgres;
-
---
--- Name: clerk; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.clerk (
-    employee_id integer NOT NULL,
-    e_password character varying(30)
-);
-
-
-ALTER TABLE public.clerk OWNER TO postgres;
 
 --
 -- Name: employee; Type: TABLE; Schema: public; Owner: postgres
@@ -94,7 +96,6 @@ CREATE TABLE public.guest (
     g_name character varying(30),
     g_surname character varying(40),
     g_email character varying(40),
-    g_password character varying(30),
     id_number character varying(30)
 );
 
@@ -157,18 +158,6 @@ CREATE TABLE public.hotelroomtype (
 ALTER TABLE public.hotelroomtype OWNER TO postgres;
 
 --
--- Name: manager; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.manager (
-    employee_id bigint NOT NULL,
-    e_password character varying(30)
-);
-
-
-ALTER TABLE public.manager OWNER TO postgres;
-
---
 -- Name: reservations; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -221,9 +210,9 @@ ALTER TABLE public.room OWNER TO postgres;
 CREATE TABLE public.roomprice (
     hotel_id character varying(10) NOT NULL,
     r_type character varying(20) NOT NULL,
-    moday real,
+    monday real,
     tuesday real,
-    wednsday real,
+    wednesday real,
     thursday real,
     friday real,
     saturday real,
@@ -261,21 +250,24 @@ CREATE TABLE public.services (
 ALTER TABLE public.services OWNER TO postgres;
 
 --
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users (
+    email character varying NOT NULL,
+    password character varying NOT NULL,
+    role public.role
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
 -- Data for Name: bills; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.bills (guest_id, res_id, hotel_id, service_type, total_price, "time") FROM stdin;
 4	3	Hilton_Ast	Breakfast	10000	2021-12-25 10:23:54
-\.
-
-
---
--- Data for Name: clerk; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.clerk (employee_id, e_password) FROM stdin;
-2	pass4
-3	pass5
 \.
 
 
@@ -294,11 +286,11 @@ COPY public.employee (employee_id, name, sname, mobile_n, salary, e_category, ho
 -- Data for Name: guest; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.guest (guest_id, id_type, g_address, mobile_n, home_n, g_category, g_name, g_surname, g_email, g_password, id_number) FROM stdin;
-2	National ID	Abai St18,Almaty,Kazakhstan	8(771)589 8712	\N	Ordinary	Ainur	Nurbek	\N	\N	\N
-3	Birth Certificate	Abai St18,Almaty,Kazakhstan	\N	\N	Ordinary	Berik	Nurbek	\N	\N	\N
-1	National ID	Abai St18,Almaty,Kazakhstan	8(771)589 2371	\N	Ordinary	Azamat	Nurbek	azamat.nurbek@gmail.com	\N	\N
-4	Passport	Lenina19,Moscow,Russia	7 (277)001 1111	\N	VIP	Stas	Komisarenko	stas.komisarenko@gmail.com	\N	\N
+COPY public.guest (guest_id, id_type, g_address, mobile_n, home_n, g_category, g_name, g_surname, g_email, id_number) FROM stdin;
+2	National ID	Abai St18,Almaty,Kazakhstan	8(771)589 8712	526810	Ordinary	Ainur	Nurbek	ainur.nurbek.@gmail.com	011203510714
+3	Birth Certificate	Abai St18,Almaty,Kazakhstan	8(708)3119043	531026	Ordinary	Berik	Nurbek	berik.nurbek@gmail.com	035048165912
+1	National ID	Abai St18,Almaty,Kazakhstan	8(771)589 2371	495206	Ordinary	Azamat	Nurbek	azamat.nurbek@gmail.com	026398162517
+4	Passport	Lenina19,Moscow,Russia	7 (277)001 1111	524810	VIP	Stas	Komisarenko	stas.komisarenko@gmail.com	081521182513
 \.
 
 
@@ -345,16 +337,6 @@ Prime_Ast	double-bedroom	50	2
 
 
 --
--- Data for Name: manager; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.manager (employee_id, e_password) FROM stdin;
-2	pass2
-3	pass3
-\.
-
-
---
 -- Data for Name: reservations; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -387,7 +369,7 @@ COPY public.room (r_number, hotel_id, r_type, r_floor, is_clean, is_occupied) FR
 -- Data for Name: roomprice; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.roomprice (hotel_id, r_type, moday, tuesday, wednsday, thursday, friday, saturday, sunday) FROM stdin;
+COPY public.roomprice (hotel_id, r_type, monday, tuesday, wednesday, thursday, friday, saturday, sunday) FROM stdin;
 \.
 
 
@@ -416,6 +398,21 @@ Clean_room	Hilton_Ast	0
 
 
 --
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.users (email, password, role) FROM stdin;
+ainur.nurbek.@gmail.com	1234	Guest
+berik.nurbek@gmail.com	1234	Guest
+azamat.nurbek@gmail.com	1234	Guest
+stas.komisarenko@gmail.com	1234	Guest
+Kairat@gmail.com	1234	Staff
+Aset@mail.com	1234	Clerk
+Aidana@gmail.com	1234	Manager
+\.
+
+
+--
 -- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -435,14 +432,6 @@ SELECT pg_catalog.setval('public.reservations_res_id_seq', 5, true);
 
 ALTER TABLE ONLY public.bills
     ADD CONSTRAINT bills_pkey PRIMARY KEY (guest_id, res_id, hotel_id);
-
-
---
--- Name: clerk clerk_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.clerk
-    ADD CONSTRAINT clerk_pkey PRIMARY KEY (employee_id);
 
 
 --
@@ -550,12 +539,25 @@ ALTER TABLE ONLY public.services
 
 
 --
+-- Name: users user_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT user_pk PRIMARY KEY (email);
+
+
+--
 -- Name: bills bills_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.bills
     ADD CONSTRAINT bills_fk FOREIGN KEY (res_id, guest_id) REFERENCES public.reservations(res_id, guest_id) ON UPDATE CASCADE ON DELETE SET NULL;
 
+ALTER TABLE ONLY public.guest
+    ADD CONSTRAINT guest_fk FOREIGN KEY (g_email) REFERENCES public.users(email) ON UPDATE CASCADE ON DELETE CASCADE;
+    
+ALTER TABLE ONLY public.employee
+    ADD CONSTRAINT employee_fk FOREIGN KEY (emp_email) REFERENCES public.users(email) ON UPDATE CASCADE ON DELETE CASCADE;
 
 --
 -- Name: bills bills_fk_service; Type: FK CONSTRAINT; Schema: public; Owner: postgres
@@ -563,22 +565,6 @@ ALTER TABLE ONLY public.bills
 
 ALTER TABLE ONLY public.bills
     ADD CONSTRAINT bills_fk_service FOREIGN KEY (service_type, hotel_id) REFERENCES public.services(service_type, hotel_id) ON UPDATE CASCADE ON DELETE SET NULL;
-
-
---
--- Name: clerk employee_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.clerk
-    ADD CONSTRAINT employee_id FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id);
-
-
---
--- Name: manager employee_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.manager
-    ADD CONSTRAINT employee_id FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id);
 
 
 --

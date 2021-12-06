@@ -1,6 +1,7 @@
 package nu.swe.hotel_chain.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,6 +25,10 @@ public class Service implements Serializable {
     @JoinColumn(name = "hotel_id", unique = true, nullable = false, insertable = false, updatable = false)
     @JsonBackReference
     private Hotel hotel;
+
+    @OneToOne(mappedBy = "service", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Bill bill;
 
     public Service(){
 

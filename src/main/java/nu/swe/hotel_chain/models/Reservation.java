@@ -1,8 +1,12 @@
 package nu.swe.hotel_chain.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "reservations")
@@ -29,6 +33,10 @@ public class Reservation implements Serializable {
 
     @Column(name = "check_out")
     private LocalDate check_out;
+
+    @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<Bill> bills = new HashSet<>();
 
     public Reservation(){}
 

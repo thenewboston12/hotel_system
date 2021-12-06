@@ -1,5 +1,7 @@
 package nu.swe.hotel_chain.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -27,6 +29,23 @@ public class Bill {
 
     @Column(name = "time")
     private Timestamp time;
+
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL, optional = false)
+    @JoinColumns({
+            @JoinColumn(name = "guest_id", referencedColumnName = "guest_id", insertable = false, updatable = false),
+            @JoinColumn(name = "res_id", referencedColumnName = "res_id", insertable = false, updatable = false)
+    })
+    @JsonBackReference
+    private Reservation reservation;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumns({
+            @JoinColumn(name = "service_type", referencedColumnName = "service_type", insertable = false, updatable = false),
+            @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", insertable = false, updatable = false)
+    })
+    @JsonBackReference
+    private Service service;
+
 
     public Bill(){}
 
@@ -95,6 +114,22 @@ public class Bill {
         this.time = time;
     }
 
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
+
+    public Service getService() {
+        return service;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
+
     @Override
     public String toString() {
         return "Bill{" +
@@ -104,6 +139,8 @@ public class Bill {
                 ", service_type='" + service_type + '\'' +
                 ", total_price=" + total_price +
                 ", time=" + time +
+                ", reservation=" + reservation +
+                ", service=" + service +
                 '}';
     }
 }

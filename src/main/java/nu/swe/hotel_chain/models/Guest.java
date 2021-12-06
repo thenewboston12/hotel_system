@@ -39,14 +39,11 @@ public class Guest {
     @Column(name = "g_email")
     private String gEmail;
 
-    @Column(name = "g_password")
-    private String gPassword;
-
     public Guest (){
 
     }
 
-    public Guest(Integer gId, String idType, String idNumber, String gAddress, String mobileNumber, String homeNumber, String gName, String gCategory, String gSname, String gEmail, String gPassword) {
+    public Guest(Integer gId, String idType, String idNumber, String gAddress, String mobileNumber, String homeNumber, String gName, String gCategory, String gSname, String gEmail) {
         this.gId = gId;
         this.idType = idType;
         this.idNumber = idNumber;
@@ -57,10 +54,9 @@ public class Guest {
         this.gCategory = gCategory;
         this.gSname = gSname;
         this.gEmail = gEmail;
-        this.gPassword = gPassword;
     }
 
-    public Guest(String idType, String idNumber, String gAddress, String mobileNumber, String homeNumber, String gName, String gCategory, String gSname, String gEmail, String gPassword) {
+    public Guest(String idType, String idNumber, String gAddress, String mobileNumber, String homeNumber, String gName, String gCategory, String gSname, String gEmail) {
         this.idType = idType;
         this.idNumber = idNumber;
         this.gAddress = gAddress;
@@ -70,7 +66,6 @@ public class Guest {
         this.gCategory = gCategory;
         this.gSname = gSname;
         this.gEmail = gEmail;
-        this.gPassword = gPassword;
     }
 
     public Integer getgId() {
@@ -153,14 +148,6 @@ public class Guest {
         this.gEmail = gEmail;
     }
 
-    public String getgPassword() {
-        return gPassword;
-    }
-
-    public void setgPassword(String gPassword) {
-        this.gPassword = gPassword;
-    }
-
     @Override
     public String toString() {
         return "Guest{" +
@@ -174,7 +161,6 @@ public class Guest {
                 ", gCategory='" + gCategory + '\'' +
                 ", gSname='" + gSname + '\'' +
                 ", gEmail='" + gEmail + '\'' +
-                ", gPassword='" + gPassword + '\'' +
                 '}';
     }
 }
