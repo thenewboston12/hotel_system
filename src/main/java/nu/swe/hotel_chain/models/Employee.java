@@ -24,9 +24,12 @@ public class Employee {
 
     @Column(name = "salary")
     private float salary;
+    public static enum Role {Manager, Clerk, Staff};
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "e_category")
-    private String e_category;
+    private Role e_role;
+
 
     @Column(name = "emp_email")
     private String e_email;
@@ -37,6 +40,7 @@ public class Employee {
     @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
+
 
     public String getHName() {
         return hotel.getH_name();
@@ -92,12 +96,12 @@ public class Employee {
         this.salary = salary;
     }
 
-    public String getE_category() {
-        return e_category;
+    public Role getE_category() {
+        return e_role;
     }
 
-    public void setE_category(String e_category) {
-        this.e_category = e_category;
+    public void setE_category(Role e_category) {
+        this.e_role = e_category;
     }
 
     public String getE_email() {
@@ -119,24 +123,24 @@ public class Employee {
 
 
 
-    public Employee(Integer emp_id, String e_name, String e_sname, String mobile, float salary, String e_category, String e_email, int e_hours, Hotel hotel) {
+    public Employee(Integer emp_id, String e_name, String e_sname, String mobile, float salary, Role e_role, String e_email, int e_hours, Hotel hotel) {
         this.emp_id = emp_id;
         this.e_name = e_name;
         this.e_sname = e_sname;
         this.mobile = mobile;
         this.salary = salary;
-        this.e_category = e_category;
+        this.e_role = e_role;
         this.e_email = e_email;
         this.e_hours = e_hours;
         this.hotel = hotel;
     }
 
-    public Employee(String e_name, String e_sname, String mobile, float salary, String e_category, String e_email, int e_hours,  Hotel hotel) {
+    public Employee(String e_name, String e_sname, String mobile, float salary, Role e_role, String e_email, int e_hours,  Hotel hotel) {
         this.e_name = e_name;
         this.e_sname = e_sname;
         this.mobile = mobile;
         this.salary = salary;
-        this.e_category = e_category;
+        this.e_role = e_role;
         this.e_email = e_email;
         this.e_hours = e_hours;
         this.hotel = hotel;
