@@ -3,7 +3,7 @@ package nu.swe.hotel_chain;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-//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
+//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
 
 @SpringBootApplication
 public class HotelChainApplication {
