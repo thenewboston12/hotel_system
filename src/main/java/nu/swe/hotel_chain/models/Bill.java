@@ -38,7 +38,7 @@ public class Bill {
     @JsonBackReference
     private Reservation reservation;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     @JoinColumns({
             @JoinColumn(name = "service_type", referencedColumnName = "service_type", insertable = false, updatable = false),
             @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", insertable = false, updatable = false)

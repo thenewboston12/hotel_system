@@ -37,7 +37,7 @@ public class Employee {
     @Column(name = "hotel_id")
     private String hotel_id;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "emp_email", referencedColumnName = "email", insertable = false, updatable = false)
     @JsonBackReference
     private Users user;
@@ -46,8 +46,8 @@ public class Employee {
     @JsonManagedReference
     private Set<Schedule> schedules = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", nullable = false, unique = true, insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", insertable = false, updatable = false)
     @JsonBackReference
     private Hotel hotel;
 

@@ -21,6 +21,6 @@ public class EmpController {
 
     @GetMapping
     public List<Employee> getEmployees(){
-        return empService.getEmployees();
+        return this.empService.getEmployees();
     }
 }

@@ -27,9 +27,13 @@ public class Users {
         this.role = role;
     }
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     @JsonManagedReference
     private Employee employee;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    @JsonManagedReference
+    private Guest guest;
 
     public String getEmail() {
         return email;

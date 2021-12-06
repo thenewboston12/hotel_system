@@ -1,5 +1,6 @@
 package nu.swe.hotel_chain.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -37,6 +38,11 @@ public class Reservation implements Serializable {
     @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     private Set<Bill> bills = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "guest_id", referencedColumnName = "guest_id", insertable = false, updatable = false)
+    @JsonBackReference
+    private Guest guest;
 
     public Reservation(){}
 

@@ -23,6 +23,6 @@ public class BillController {
     @ResponseStatus(HttpStatus.OK)
     //GET ALL BILLS
     public List<Bill> getBills(){
-        return billService.getBills();
+        return this.billService.getBills();
     }
 }

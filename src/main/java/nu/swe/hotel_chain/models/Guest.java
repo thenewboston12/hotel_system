@@ -1,6 +1,11 @@
 package nu.swe.hotel_chain.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -38,6 +43,15 @@ public class Guest {
 
     @Column(name = "g_email")
     private String gEmail;
+
+    @OneToMany(mappedBy = "guest", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<Reservation> reservations = new HashSet<>();
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "g_email", referencedColumnName = "email", insertable = false, updatable = false)
+    @JsonBackReference
+    private Users user;
 
     public Guest (){
 
@@ -148,6 +162,22 @@ public class Guest {
         this.gEmail = gEmail;
     }
 
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Guest{" +
@@ -161,6 +191,8 @@ public class Guest {
                 ", gCategory='" + gCategory + '\'' +
                 ", gSname='" + gSname + '\'' +
                 ", gEmail='" + gEmail + '\'' +
+                ", reservations=" + reservations +
+                ", user=" + user +
                 '}';
     }
 }

@@ -17,7 +17,7 @@ public class EmpService {
     }
 
     public List<Employee> getEmployees(){
-        return empRepository.findAll();
+        return this.empRepository.findAll();
     }
 
 

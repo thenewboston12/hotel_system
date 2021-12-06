@@ -23,14 +23,14 @@ public class HotelController {
     @ResponseStatus(HttpStatus.OK)
     // GETS ALL HOTELS
     public List<Hotel> getHotels(){
-        return hotelService.getHotels();
+        return this.hotelService.getHotels();
     }
 
     @GetMapping(path = "{hotel_id}")
     @ResponseStatus(HttpStatus.OK)
     // GET HOTEL BY ID
     public List<Hotel> getHotel(@PathVariable("hotel_id") String hotel_id){
-        return hotelService.getHotel(hotel_id);
+        return this.hotelService.getHotel(hotel_id);
     }
 
     @GetMapping(path = "/availabe")
@@ -41,6 +41,6 @@ public class HotelController {
                                                         @RequestParam(required = true) String check_out){
         LocalDate check_in_date = LocalDate.parse(check_in);
         LocalDate check_out_date = LocalDate.parse(check_out);
-        return hotelService.getAvailableHotelsByCityAndDates(destination, r_type, check_in_date, check_out_date);
+        return this.hotelService.getAvailableHotelsByCityAndDates(destination, r_type, check_in_date, check_out_date);
     };
 }

@@ -17,6 +17,6 @@ public class BillService {
     }
 
     public List<Bill> getBills(){
-        return billRepository.findAll();
+        return this.billRepository.findAll();
     }
 }

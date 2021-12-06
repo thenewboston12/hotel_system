@@ -24,6 +24,6 @@ public class ReservationController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<Reservation> getReservations(){
-        return reservationService.getReservations();
+        return this.reservationService.getReservations();
     }
 }
