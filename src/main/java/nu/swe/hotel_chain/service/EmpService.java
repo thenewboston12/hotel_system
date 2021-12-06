@@ -18,9 +18,11 @@ public class EmpService {
 
     public List<Employee> getEmployees(){
         return empRepository.findAll();
-
-
     }
+    public List<Employee> getManagerDashboard(){
+        return empRepository.selectManagerDashboard();
+    }
+
 
 
 
