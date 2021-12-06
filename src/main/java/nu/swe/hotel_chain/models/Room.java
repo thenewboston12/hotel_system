@@ -33,8 +33,8 @@ public class Room implements Serializable {
 
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumns({
-            @JoinColumn(name = "hotel_id", unique = true, nullable = false, insertable = false, updatable = false),
-            @JoinColumn(name = "r_type", unique = true, nullable = false, insertable = false, updatable = false)
+            @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", insertable = false, updatable = false),
+            @JoinColumn(name = "r_type", referencedColumnName = "r_type", insertable = false, updatable = false)
     })
     @JsonBackReference
     private RoomType roomType;
