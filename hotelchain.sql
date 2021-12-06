@@ -148,8 +148,7 @@ ALTER TABLE public.hotelroomtype OWNER TO postgres;
 --
 
 CREATE TABLE public.manager (
-    employee_id integer NOT NULL,
-    hotel_id character varying(10) NOT NULL,
+    employee_id bigint NOT NULL,
     e_password character varying(30)
 );
 
@@ -251,9 +250,9 @@ COPY public.clerk (employee_id, e_password) FROM stdin;
 --
 
 COPY public.employee (employee_id, name, sname, mobile_n, salary, e_category, hotel_id, emp_email, m_w_hours) FROM stdin;
-1	Kairat	Nurtas	8(707) 576 1124	100000	Manager	Hilton_Ast	Kairat@gmail.com	\N
-2	Aset	Tashenov	8(776) 865 7777	50000	cleaning staff	Hilton_Ast	Aset@mail.com	\N
-3	Aidana	Askarovna	8(771) 010 9291	50000	maid	Hilton_Ast	Aidana@gmail.com	\N
+1	Kairat	Nurtas	8(707) 576 1124	100000	Manager	Hilton_Ast	Kairat@gmail.com	12
+2	Aset	Tashenov	8(776) 865 7777	50000	cleaning staff	Hilton_Ast	Aset@mail.com	2
+3	Aidana	Askarovna	8(771) 010 9291	50000	maid	Hilton_Ast	Aidana@gmail.com	12
 \.
 
 
@@ -310,8 +309,9 @@ Hilton_Ast	double-bedroom	75	2
 -- Data for Name: manager; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.manager (employee_id, hotel_id, e_password) FROM stdin;
-1	Hilton_Ast	\N
+COPY public.manager (employee_id, e_password) FROM stdin;
+2	pass2
+3	pass3
 \.
 
 
@@ -320,9 +320,9 @@ COPY public.manager (employee_id, hotel_id, e_password) FROM stdin;
 --
 
 COPY public.reservations (res_id, guest_id, hotel_id, r_number, check_in, check_out) FROM stdin;
-1	1	Hilton_Ast	202	2021-11-20	2021-12-10
-2	1	Hilton_Ast	203	2021-11-20	2021-12-10
-3	4	Hilton_Ast	305	2021-11-29	2021-12-02
+1	1	Hilton_Ast	202	2021-12-25	2021-12-29
+2	1	Hilton_Ast	203	2021-12-15	2021-12-19
+3	4	Hilton_Ast	305	2021-12-29	2021-12-31
 \.
 
 
@@ -332,10 +332,10 @@ COPY public.reservations (res_id, guest_id, hotel_id, r_number, check_in, check_
 
 COPY public.room (r_number, hotel_id, r_type, r_floor, price_id, is_clean, is_occupied) FROM stdin;
 201	Hilton_Ast	single-bedroom	2	1	t	f
-202	Hilton_Ast	single-bedroom	2	1	f	t
-203	Hilton_Ast	single-bedroom	2	1	f	t
 305	Hilton_Ast	suite	3	6	f	f
 501	Hilton_Ast	penthouse	5	7	t	f
+202	Hilton_Ast	single-bedroom	2	1	f	f
+203	Hilton_Ast	single-bedroom	2	1	f	f
 \.
 
 
@@ -442,14 +442,6 @@ ALTER TABLE ONLY public.hotelroomtype
 
 
 --
--- Name: manager manager_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.manager
-    ADD CONSTRAINT manager_pkey PRIMARY KEY (employee_id, hotel_id);
-
-
---
 -- Name: roomprice price_id; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -522,18 +514,18 @@ ALTER TABLE ONLY public.bills
 
 
 --
--- Name: manager employee_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.manager
-    ADD CONSTRAINT employee_id FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id);
-
-
---
 -- Name: clerk employee_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.clerk
+    ADD CONSTRAINT employee_id FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id);
+
+
+--
+-- Name: manager employee_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.manager
     ADD CONSTRAINT employee_id FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id);
 
 
@@ -558,14 +550,6 @@ ALTER TABLE ONLY public.reservations
 --
 
 ALTER TABLE ONLY public.services
-    ADD CONSTRAINT hotel_id FOREIGN KEY (hotel_id) REFERENCES public.hotel(hotel_id);
-
-
---
--- Name: manager hotel_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.manager
     ADD CONSTRAINT hotel_id FOREIGN KEY (hotel_id) REFERENCES public.hotel(hotel_id);
 
 
@@ -598,14 +582,6 @@ ALTER TABLE ONLY public.hotelphone
 --
 
 ALTER TABLE ONLY public.hotelroomtype
-    ADD CONSTRAINT hotel_id FOREIGN KEY (hotel_id) REFERENCES public.hotel(hotel_id) NOT VALID;
-
-
---
--- Name: reservations hotel_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.reservations
     ADD CONSTRAINT hotel_id FOREIGN KEY (hotel_id) REFERENCES public.hotel(hotel_id) NOT VALID;
 
 
