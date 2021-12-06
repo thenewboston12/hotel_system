@@ -23,13 +23,4 @@ public class EmpController {
     public List<Employee> getEmployees(){
         return empService.getEmployees();
     }
-
-    @GetMapping(path = "/manager")
-    public List<Employee> getManagerDashboard(){
-        return empService.getManagerDashboard();
-    }
-
-    // putmapping goes here
-
-
 }

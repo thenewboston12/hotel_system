@@ -1,5 +1,7 @@
 package nu.swe.hotel_chain.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -22,6 +24,11 @@ public class Schedule implements Serializable {
 
     @Column(name = "end_time")
     private Timestamp end_time;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "employee_id", referencedColumnName = "employee_id", insertable = false, updatable = false, nullable = false)
+    @JsonBackReference
+    private Employee employee;
 
     public Schedule(){}
 

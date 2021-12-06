@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -25,7 +27,6 @@ public class Employee {
 
     @Column(name = "salary")
     private float salary;
-    public static enum Role {Manager, Clerk, Staff};
 
     @Column(name = "emp_email")
     private String e_email;
@@ -35,6 +36,20 @@ public class Employee {
 
     @Column(name = "hotel_id")
     private String hotel_id;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "emp_email", referencedColumnName = "email", insertable = false, updatable = false)
+    @JsonBackReference
+    private Users user;
+
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<Schedule> schedules = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", nullable = false, unique = true, insertable = false, updatable = false)
+    @JsonBackReference
+    private Hotel hotel;
 
     public Employee() {
     }
@@ -122,6 +137,34 @@ public class Employee {
         this.hotel_id = hotel_id;
     }
 
+    public void setE_hours(int e_hours) {
+        this.e_hours = e_hours;
+    }
+
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
+    }
+
+    public Set<Schedule> getSchedules() {
+        return schedules;
+    }
+
+    public void setSchedules(Set<Schedule> schedules) {
+        this.schedules = schedules;
+    }
+
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
@@ -132,7 +175,10 @@ public class Employee {
                 ", salary=" + salary +
                 ", e_email='" + e_email + '\'' +
                 ", e_hours=" + e_hours +
-                ", hotel_id=" + hotel_id +
+                ", hotel_id='" + hotel_id + '\'' +
+                ", user=" + user +
+                ", schedules=" + schedules +
+                ", hotel=" + hotel +
                 '}';
     }
 }

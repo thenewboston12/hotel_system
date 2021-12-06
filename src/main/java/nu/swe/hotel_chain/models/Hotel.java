@@ -39,6 +39,10 @@ public class Hotel {
     @JsonManagedReference
     private Set<Service> h_services = new HashSet<>();
 
+    @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<Employee> employees = new HashSet<>();
+
     public Hotel(){
 
     }

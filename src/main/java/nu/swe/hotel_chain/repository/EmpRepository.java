@@ -11,12 +11,4 @@ import java.util.List;
 
 @Repository
 public interface EmpRepository extends JpaRepository<Employee, Integer> {
-
-    // manager dashboard. Selects all employees that are not managers
-    @Query(value =
-            "SELECT * FROM" +
-                    " employee WHERE e_category <> 'Manager' ", nativeQuery = true
-    )
-    List<Employee> selectManagerDashboard();
-
 }
