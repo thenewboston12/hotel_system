@@ -20,12 +20,14 @@ public class HotelController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    // GETS ALL HOTELS
     public List<Hotel> getHotels(){
         return hotelService.getHotels();
     }
 
     @GetMapping(path = "{hotel_id}")
     @ResponseStatus(HttpStatus.OK)
+    // GET HOTEL BY ID
     public List<Hotel> getHotel(@PathVariable("hotel_id") String hotel_id){
         return hotelService.getHotel(hotel_id);
     }

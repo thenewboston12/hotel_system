@@ -29,7 +29,7 @@ CREATE TABLE public.bills (
     res_id integer NOT NULL,
     hotel_id character varying(10) NOT NULL,
     service_type character varying(30),
-    total_price float4,
+    total_price real,
     "time" date
 );
 
@@ -57,7 +57,7 @@ CREATE TABLE public.employee (
     name character varying(30),
     sname character varying(40),
     mobile_n character varying(20),
-    salary float4,
+    salary real,
     e_category character varying(30),
     hotel_id character varying(10),
     emp_email character varying(40),
@@ -210,7 +210,7 @@ ALTER TABLE public.room OWNER TO postgres;
 CREATE TABLE public.roomprice (
     price_id integer NOT NULL,
     dow character varying(10),
-    price float4
+    price real
 );
 
 
@@ -223,7 +223,7 @@ ALTER TABLE public.roomprice OWNER TO postgres;
 CREATE TABLE public.services (
     service_type character varying(30) NOT NULL,
     hotel_id character varying(10) NOT NULL,
-    s_price float4
+    s_price real
 );
 
 
@@ -251,9 +251,9 @@ COPY public.clerk (employee_id, e_password) FROM stdin;
 --
 
 COPY public.employee (employee_id, name, sname, mobile_n, salary, e_category, hotel_id, emp_email, m_w_hours) FROM stdin;
-1	Kairat	Nurtas	8(707) 576 1124	 100000.00	Manager	Hilton_Ast	Kairat@gmail.com	\N
-2	Aset	Tashenov	8(776) 865 7777	 50000.00	cleaning staff	Hilton_Ast	Aset@mail.com	\N
-3	Aidana	Askarovna	8(771) 010 9291	 50000.00	maid	Hilton_Ast	Aidana@gmail.com	\N
+1	Kairat	Nurtas	8(707) 576 1124	100000	Manager	Hilton_Ast	Kairat@gmail.com	\N
+2	Aset	Tashenov	8(776) 865 7777	50000	cleaning staff	Hilton_Ast	Aset@mail.com	\N
+3	Aidana	Askarovna	8(771) 010 9291	50000	maid	Hilton_Ast	Aidana@gmail.com	\N
 \.
 
 
@@ -331,11 +331,11 @@ COPY public.reservations (res_id, guest_id, hotel_id, r_number, check_in, check_
 --
 
 COPY public.room (r_number, hotel_id, r_type, r_floor, price_id, is_clean, is_occupied) FROM stdin;
-201	Hilton_Ast	single-bedroom	2	1	t	\N
-202	Hilton_Ast	single-bedroom	2	1	f	\N
-203	Hilton_Ast	single-bedroom	2	1	f	\N
-305	Hilton_Ast	suite	3	6	f	\N
-501	Hilton_Ast	penthouse	5	7	t	\N
+201	Hilton_Ast	single-bedroom	2	1	t	f
+202	Hilton_Ast	single-bedroom	2	1	f	t
+203	Hilton_Ast	single-bedroom	2	1	f	t
+305	Hilton_Ast	suite	3	6	f	f
+501	Hilton_Ast	penthouse	5	7	t	f
 \.
 
 
@@ -344,14 +344,14 @@ COPY public.room (r_number, hotel_id, r_type, r_floor, price_id, is_clean, is_oc
 --
 
 COPY public.roomprice (price_id, dow, price) FROM stdin;
-1	week	 70000.00
-2	weekend	 100000.00
-3	week	 100000.00
-4	weekend	 150000.00
-5	week	 150000.00
-6	weekend	 200000.00
-7	week	 500000.00
-8	weekend	 1000000.00
+1	week	70000
+2	weekend	100000
+3	week	100000
+4	weekend	150000
+5	week	150000
+6	weekend	200000
+7	week	500000
+8	weekend	1e+06
 \.
 
 
@@ -360,14 +360,14 @@ COPY public.roomprice (price_id, dow, price) FROM stdin;
 --
 
 COPY public.services (service_type, hotel_id, s_price) FROM stdin;
-Pool	Hilton_Ast	 12000.00
-SPA	Hilton_Ast	 20000.00
-Conference facilities	Hilton_Ast	 50000.00
-Breakfast	Hilton_Ast	 10000.00
-Cinema	Hilton_Ast	 5000.00
-Restaurant	Hilton_Ast	 30000.00
-Snacks_in_the_room	Hilton_Ast	 5000.00
-Clean_room	Hilton_Ast	 0.00
+Pool	Hilton_Ast	12000
+SPA	Hilton_Ast	20000
+Conference facilities	Hilton_Ast	50000
+Breakfast	Hilton_Ast	10000
+Cinema	Hilton_Ast	5000
+Restaurant	Hilton_Ast	30000
+Snacks_in_the_room	Hilton_Ast	5000
+Clean_room	Hilton_Ast	0
 \.
 
 
@@ -506,6 +506,22 @@ ALTER TABLE ONLY public.services
 
 
 --
+-- Name: bills bills_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bills
+    ADD CONSTRAINT bills_fk FOREIGN KEY (res_id, guest_id) REFERENCES public.reservations(res_id, guest_id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
+-- Name: bills bills_fk_service; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bills
+    ADD CONSTRAINT bills_fk_service FOREIGN KEY (service_type, hotel_id) REFERENCES public.services(service_type, hotel_id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
 -- Name: manager employee_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -602,19 +618,11 @@ ALTER TABLE ONLY public.room
 
 
 --
--- Name: reservations r_number; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: reservations reservations_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.reservations
-    ADD CONSTRAINT r_number FOREIGN KEY (r_number) REFERENCES public.room(r_number) NOT VALID;
-
-
---
--- Name: bills res_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.bills
-    ADD CONSTRAINT res_id FOREIGN KEY (res_id) REFERENCES public.reservations(res_id);
+    ADD CONSTRAINT reservations_fk FOREIGN KEY (r_number, hotel_id) REFERENCES public.room(r_number, hotel_id);
 
 
 --
