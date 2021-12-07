@@ -20,7 +20,11 @@ public class EmpService {
         return this.empRepository.findAll();
     }
 
+    public List<Employee> getEmployeeByEmail(String email) {
+        return this.empRepository.findEmployeeByE_email(email);
+    }
 
-
-
+    public List<Employee> getEmployeeByRole(String role) {
+        return this.empRepository.findEmployeeByE_email(role);
+    }
 }

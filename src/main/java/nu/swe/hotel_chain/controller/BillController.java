@@ -35,6 +35,19 @@ public class BillController {
         return this.billService.getBillsByRes_id(res_id_int);
     }
 
+    @GetMapping(path = "guest_id/{guest_id}/")
+    public List<Bill> getBillsByGuest_id(@PathVariable("guest_id") String guest_id){
+        Integer guest_id_int = Integer.parseInt(guest_id);
+        return this.billService.getBillsByGuest_id(guest_id_int);
+    }
+
+    @GetMapping(path = "guest_id/{guest_id}/res_id/{res_id}")
+    public List<Bill> getBillsByGuest_idAndRes_id(@PathVariable("guest_id") String guest_id, @PathVariable("res_id") String res_id){
+        Integer res_id_int = Integer.parseInt(res_id);
+        Integer guest_id_int = Integer.parseInt(guest_id);
+        return this.billService.getBillsByGuest_idAndRes_id(guest_id_int, res_id_int);
+    }
+
     @PostMapping(path = "creteBillForService")
     public void createNewBillForService(@RequestBody Bill bill){
         this.billService.createNewBillForService(bill);

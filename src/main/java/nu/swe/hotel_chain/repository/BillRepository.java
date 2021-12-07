@@ -15,4 +15,10 @@ public interface BillRepository extends JpaRepository<Bill, Integer> {
 
     @Query(value = "select B from Bill as B where B.res_id = ?1")
     public List<Bill> findByRes_id(Integer res_id);
+
+    @Query(value = "select B from Bill as B where B.res_id= ?2 and exists (select R from Reservation as R where R.res_id = B.res_id and R.guest_id = ?1)")
+    public List<Bill> findByGuest_idAndRes_id(Integer guest_id, Integer res_id);
+
+    @Query(value = "select B from Bill as B where exists (select R from Reservation as R where R.res_id = B.res_id and R.guest_id = ?1)")
+    public List<Bill> findByGuest_id(Integer guest_id);
 }

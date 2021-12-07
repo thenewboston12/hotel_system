@@ -4,6 +4,7 @@ import nu.swe.hotel_chain.models.Employee;
 import nu.swe.hotel_chain.service.EmpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,5 +23,15 @@ public class EmpController {
     @GetMapping
     public List<Employee> getEmployees(){
         return this.empService.getEmployees();
+    }
+
+    @GetMapping(path = "email/{{email}}")
+    public List<Employee> getEmployeeByEmail(@PathVariable("email") String email){
+        return this.empService.getEmployeeByEmail(email);
+    }
+
+    @GetMapping(path = "role/{{role}}")
+    public List<Employee> getEmployeeByRole(@PathVariable("role") String role){
+        return this.empService.getEmployeeByRole(role);
     }
 }
