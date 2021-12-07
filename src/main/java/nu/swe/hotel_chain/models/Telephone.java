@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "hotelphone")
+@IdClass(TelehoneId.class)
 public class Telephone implements Serializable {
 
     /*Fields*/
@@ -19,7 +20,7 @@ public class Telephone implements Serializable {
     private String h_phone;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "hotel_id", nullable = false)
+    @JoinColumn(name = "hotel_id", nullable = false, insertable = false, updatable = false)
     @JsonBackReference
     private Hotel hotel;
 

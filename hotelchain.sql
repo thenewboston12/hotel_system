@@ -39,16 +39,30 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.bills (
-    guest_id integer NOT NULL,
     res_id integer NOT NULL,
     hotel_id character varying(10) NOT NULL,
     service_type character varying(30),
     total_price real NOT NULL,
-    "time" timestamp without time zone NOT NULL
+    "time" timestamp without time zone NOT NULL,
+    bill_id integer NOT NULL
 );
 
 
 ALTER TABLE public.bills OWNER TO postgres;
+
+--
+-- Name: bills_bill_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.bills ALTER COLUMN bill_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.bills_bill_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
 
 --
 -- Name: employee; Type: TABLE; Schema: public; Owner: postgres
@@ -216,7 +230,8 @@ CREATE TABLE public.schedule (
     employee_id integer NOT NULL,
     r_number integer NOT NULL,
     start_time timestamp without time zone,
-    end_time timestamp without time zone
+    end_time timestamp without time zone,
+    hotel_id character varying NOT NULL
 );
 
 
@@ -252,8 +267,8 @@ ALTER TABLE public.users OWNER TO postgres;
 -- Data for Name: bills; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.bills (guest_id, res_id, hotel_id, service_type, total_price, "time") FROM stdin;
-4	3	Hilton_Ast	Breakfast	10000	2021-12-25 10:23:54
+COPY public.bills (res_id, hotel_id, service_type, total_price, "time", bill_id) FROM stdin;
+3	Hilton_Ast	Breakfast	10000	2021-12-25 10:23:54	1
 \.
 
 
@@ -363,7 +378,7 @@ COPY public.roomprice (hotel_id, r_type, monday, tuesday, wednesday, thursday, f
 -- Data for Name: schedule; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.schedule (employee_id, r_number, start_time, end_time) FROM stdin;
+COPY public.schedule (employee_id, r_number, start_time, end_time, hotel_id) FROM stdin;
 \.
 
 
@@ -399,6 +414,13 @@ Aidana@gmail.com	1234	Manager
 
 
 --
+-- Name: bills_bill_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.bills_bill_id_seq', 1, true);
+
+
+--
 -- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -413,11 +435,11 @@ SELECT pg_catalog.setval('public.reservations_res_id_seq', 5, true);
 
 
 --
--- Name: bills bills_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: bills bills_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.bills
-    ADD CONSTRAINT bills_pkey PRIMARY KEY (guest_id, res_id, hotel_id);
+    ADD CONSTRAINT bills_pk PRIMARY KEY (bill_id);
 
 
 --
@@ -505,7 +527,7 @@ ALTER TABLE ONLY public.roomprice
 --
 
 ALTER TABLE ONLY public.schedule
-    ADD CONSTRAINT schedule_pk PRIMARY KEY (employee_id, r_number);
+    ADD CONSTRAINT schedule_pk PRIMARY KEY (hotel_id, r_number, employee_id);
 
 
 --
@@ -633,7 +655,7 @@ ALTER TABLE ONLY public.roomprice
 --
 
 ALTER TABLE ONLY public.schedule
-    ADD CONSTRAINT schedule_fk FOREIGN KEY (r_number) REFERENCES public.room(r_number);
+    ADD CONSTRAINT schedule_fk FOREIGN KEY (r_number, hotel_id) REFERENCES public.room(r_number, hotel_id) ON UPDATE CASCADE ON DELETE SET NULL;
 
 
 --

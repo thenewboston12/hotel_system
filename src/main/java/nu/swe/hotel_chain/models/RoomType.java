@@ -1,6 +1,7 @@
 package nu.swe.hotel_chain.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -27,6 +28,27 @@ public class RoomType implements Serializable {
     @Column(name = "capacity")
     private int capacity;
 
+    @Column(name = "monday")
+    private Float monday;
+
+    @Column(name = "tuesday")
+    private Float tuesday;
+
+    @Column(name = "wednesday")
+    private Float wednesday;
+
+    @Column(name = "thursday")
+    private Float thursday;
+
+    @Column(name = "friday")
+    private Float friday;
+
+    @Column(name = "saturday")
+    private Float saturday;
+
+    @Column(name = "sunday")
+    private Float sunday;
+
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "hotel_id", nullable = false, unique = true, insertable = false, updatable = false)
     @JsonBackReference
@@ -36,17 +58,20 @@ public class RoomType implements Serializable {
     @JsonManagedReference
     private Set<Room> rooms = new HashSet<>();
 
-    @OneToOne(mappedBy = "room_type", fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
-    @JsonManagedReference
-    private RoomPrice roomPrice;
-
     public RoomType(){}
 
-    public RoomType(String hotel_id, String r_type, double size, int capacity) {
+    public RoomType(String hotel_id, String r_type, double size, int capacity, Float monday, Float tuesday, Float wednesday, Float thursday, Float friday, Float saturday, Float sunday) {
         this.hotel_id = hotel_id;
         this.r_type = r_type;
         this.size = size;
         this.capacity = capacity;
+        this.monday = monday;
+        this.tuesday = tuesday;
+        this.wednesday = wednesday;
+        this.thursday = thursday;
+        this.friday = friday;
+        this.saturday = saturday;
+        this.sunday = sunday;
     }
 
     public String getHotel_id() {
@@ -97,12 +122,60 @@ public class RoomType implements Serializable {
         this.rooms = rooms;
     }
 
-    public RoomPrice getRoomPrice() {
-        return roomPrice;
+    public Float getMonday() {
+        return monday;
     }
 
-    public void setRoomPrice(RoomPrice roomPrice) {
-        this.roomPrice = roomPrice;
+    public void setMonday(Float monday) {
+        this.monday = monday;
+    }
+
+    public Float getTuesday() {
+        return tuesday;
+    }
+
+    public void setTuesday(Float tuesday) {
+        this.tuesday = tuesday;
+    }
+
+    public Float getWednesday() {
+        return wednesday;
+    }
+
+    public void setWednesday(Float wednesday) {
+        this.wednesday = wednesday;
+    }
+
+    public Float getThursday() {
+        return thursday;
+    }
+
+    public void setThursday(Float thursday) {
+        this.thursday = thursday;
+    }
+
+    public Float getFriday() {
+        return friday;
+    }
+
+    public void setFriday(Float friday) {
+        this.friday = friday;
+    }
+
+    public Float getSaturday() {
+        return saturday;
+    }
+
+    public void setSaturday(Float saturday) {
+        this.saturday = saturday;
+    }
+
+    public Float getSunday() {
+        return sunday;
+    }
+
+    public void setSunday(Float sunday) {
+        this.sunday = sunday;
     }
 
     @Override
@@ -112,9 +185,15 @@ public class RoomType implements Serializable {
                 ", r_type='" + r_type + '\'' +
                 ", size=" + size +
                 ", capacity=" + capacity +
+                ", monday=" + monday +
+                ", tuesday=" + tuesday +
+                ", wednesday=" + wednesday +
+                ", thursday=" + thursday +
+                ", friday=" + friday +
+                ", saturday=" + saturday +
+                ", sunday=" + sunday +
                 ", hotel=" + hotel +
                 ", rooms=" + rooms +
-                ", roomPrice=" + roomPrice +
                 '}';
     }
 }
