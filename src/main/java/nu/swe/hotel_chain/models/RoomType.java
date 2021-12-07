@@ -36,6 +36,10 @@ public class RoomType implements Serializable {
     @JsonManagedReference
     private Set<Room> rooms = new HashSet<>();
 
+    @OneToOne(mappedBy = "room_type", fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    @JsonManagedReference
+    private RoomPrice roomPrice;
+
     public RoomType(){}
 
     public RoomType(String hotel_id, String r_type, double size, int capacity) {
@@ -44,7 +48,6 @@ public class RoomType implements Serializable {
         this.size = size;
         this.capacity = capacity;
     }
-
 
     public String getHotel_id() {
         return hotel_id;
@@ -94,6 +97,14 @@ public class RoomType implements Serializable {
         this.rooms = rooms;
     }
 
+    public RoomPrice getRoomPrice() {
+        return roomPrice;
+    }
+
+    public void setRoomPrice(RoomPrice roomPrice) {
+        this.roomPrice = roomPrice;
+    }
+
     @Override
     public String toString() {
         return "RoomType{" +
@@ -101,7 +112,9 @@ public class RoomType implements Serializable {
                 ", r_type='" + r_type + '\'' +
                 ", size=" + size +
                 ", capacity=" + capacity +
+                ", hotel=" + hotel +
                 ", rooms=" + rooms +
+                ", roomPrice=" + roomPrice +
                 '}';
     }
 }

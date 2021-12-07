@@ -17,19 +17,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: erole; Type: TYPE; Schema: public; Owner: postgres
---
-
-CREATE TYPE public.erole AS ENUM (
-    'Manager',
-    'Staff',
-    'Clerk'
-);
-
-
-ALTER TYPE public.erole OWNER TO postgres;
-
---
 -- Name: role; Type: TYPE; Schema: public; Owner: postgres
 --
 
@@ -56,8 +43,8 @@ CREATE TABLE public.bills (
     res_id integer NOT NULL,
     hotel_id character varying(10) NOT NULL,
     service_type character varying(30),
-    total_price real,
-    "time" timestamp without time zone
+    total_price real NOT NULL,
+    "time" timestamp without time zone NOT NULL
 );
 
 
@@ -73,9 +60,8 @@ CREATE TABLE public.employee (
     sname character varying(40),
     mobile_n character varying(20),
     salary real,
-    e_category public.erole,
-    hotel_id character varying(10),
-    emp_email character varying(40),
+    hotel_id character varying(10) NOT NULL,
+    emp_email character varying(40) NOT NULL,
     m_w_hours integer
 );
 
@@ -88,15 +74,15 @@ ALTER TABLE public.employee OWNER TO postgres;
 
 CREATE TABLE public.guest (
     guest_id integer NOT NULL,
-    id_type character varying(30),
+    id_type character varying(30) NOT NULL,
     g_address character varying(50),
     mobile_n character varying(20),
     home_n character varying(20),
-    g_category character varying(20),
+    g_category character varying(20) NOT NULL,
     g_name character varying(30),
     g_surname character varying(40),
-    g_email character varying(40),
-    id_number character varying(30)
+    g_email character varying(40) NOT NULL,
+    id_number character varying(30) NOT NULL
 );
 
 
@@ -124,7 +110,7 @@ CREATE TABLE public.hotel (
     hotel_id character varying(10) NOT NULL,
     h_name character varying(30),
     h_address character varying(50),
-    h_city character varying(20),
+    h_city character varying(20) NOT NULL,
     h_country character varying(30)
 );
 
@@ -164,10 +150,10 @@ ALTER TABLE public.hotelroomtype OWNER TO postgres;
 CREATE TABLE public.reservations (
     res_id integer NOT NULL,
     guest_id integer NOT NULL,
-    hotel_id character varying(10),
-    r_number integer,
-    check_in date,
-    check_out date
+    hotel_id character varying(10) NOT NULL,
+    r_number integer NOT NULL,
+    check_in date NOT NULL,
+    check_out date NOT NULL
 );
 
 
@@ -275,10 +261,10 @@ COPY public.bills (guest_id, res_id, hotel_id, service_type, total_price, "time"
 -- Data for Name: employee; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.employee (employee_id, name, sname, mobile_n, salary, e_category, hotel_id, emp_email, m_w_hours) FROM stdin;
-1	Kairat	Nurtas	8(707) 576 1124	100000	Manager	Hilton_Ast	Kairat@gmail.com	12
-2	Aset	Tashenov	8(776) 865 7777	50000	Staff	Hilton_Ast	Aset@mail.com	2
-3	Aidana	Askarovna	8(771) 010 9291	50000	Staff	Hilton_Ast	Aidana@gmail.com	12
+COPY public.employee (employee_id, name, sname, mobile_n, salary, hotel_id, emp_email, m_w_hours) FROM stdin;
+1	Kairat	Nurtas	8(707) 576 1124	100000	Hilton_Ast	Kairat@gmail.com	12
+2	Aset	Tashenov	8(776) 865 7777	50000	Hilton_Ast	Aset@mail.com	2
+3	Aidana	Askarovna	8(771) 010 9291	50000	Hilton_Ast	Aidana@gmail.com	12
 \.
 
 
@@ -495,7 +481,7 @@ ALTER TABLE ONLY public.reservations
 --
 
 ALTER TABLE ONLY public.reservations
-    ADD CONSTRAINT reservations_pkey PRIMARY KEY (res_id, guest_id);
+    ADD CONSTRAINT reservations_pkey PRIMARY KEY (res_id);
 
 
 --
@@ -551,13 +537,8 @@ ALTER TABLE ONLY public.users
 --
 
 ALTER TABLE ONLY public.bills
-    ADD CONSTRAINT bills_fk FOREIGN KEY (res_id, guest_id) REFERENCES public.reservations(res_id, guest_id) ON UPDATE CASCADE ON DELETE SET NULL;
+    ADD CONSTRAINT bills_fk FOREIGN KEY (res_id) REFERENCES public.reservations(res_id) ON UPDATE CASCADE ON DELETE SET NULL;
 
-ALTER TABLE ONLY public.guest
-    ADD CONSTRAINT guest_fk FOREIGN KEY (g_email) REFERENCES public.users(email) ON UPDATE CASCADE ON DELETE CASCADE;
-    
-ALTER TABLE ONLY public.employee
-    ADD CONSTRAINT employee_fk FOREIGN KEY (emp_email) REFERENCES public.users(email) ON UPDATE CASCADE ON DELETE CASCADE;
 
 --
 -- Name: bills bills_fk_service; Type: FK CONSTRAINT; Schema: public; Owner: postgres
@@ -568,11 +549,19 @@ ALTER TABLE ONLY public.bills
 
 
 --
--- Name: bills guest_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: employee employee_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.bills
-    ADD CONSTRAINT guest_id FOREIGN KEY (guest_id) REFERENCES public.guest(guest_id);
+ALTER TABLE ONLY public.employee
+    ADD CONSTRAINT employee_fk FOREIGN KEY (emp_email) REFERENCES public.users(email) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: guest guest_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guest
+    ADD CONSTRAINT guest_fk FOREIGN KEY (g_email) REFERENCES public.users(email) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --

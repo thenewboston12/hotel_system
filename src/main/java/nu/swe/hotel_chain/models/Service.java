@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "services")
@@ -26,9 +28,9 @@ public class Service implements Serializable {
     @JsonBackReference
     private Hotel hotel;
 
-    @OneToOne(mappedBy = "service", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "service", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
-    private Bill bill;
+    private Set<Bill> bills = new HashSet<>();
 
     public Service(){
 
@@ -77,12 +79,22 @@ public class Service implements Serializable {
         this.hotel = hotel;
     }
 
+    public Set<Bill> getBills() {
+        return bills;
+    }
+
+    public void setBills(Set<Bill> bills) {
+        this.bills = bills;
+    }
+
     @Override
     public String toString() {
         return "Service{" +
                 "service_type='" + service_type + '\'' +
                 ", hotel_id='" + hotel_id + '\'' +
                 ", s_price=" + s_price +
+                ", hotel=" + hotel +
+                ", bills=" + bills +
                 '}';
     }
 }

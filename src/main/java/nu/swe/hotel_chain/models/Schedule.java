@@ -19,6 +19,10 @@ public class Schedule implements Serializable {
     @Column(name = "r_number")
     private int r_number;
 
+    @Id
+    @Column(name = "hotel_id")
+    private String hotel_id;
+
     @Column(name = "start_time")
     private Timestamp start_time;
 
@@ -30,11 +34,20 @@ public class Schedule implements Serializable {
     @JsonBackReference
     private Employee employee;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumns({
+            @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", insertable = false, updatable = false),
+            @JoinColumn(name = "r_number", referencedColumnName = "r_number", insertable = false, updatable = false)
+    })
+    @JsonBackReference
+    private Room room;
+
     public Schedule(){}
 
-    public Schedule(int employee_id, int r_number, Timestamp start_time, Timestamp end_time) {
+    public Schedule(int employee_id, int r_number, String hotel_id, Timestamp start_time, Timestamp end_time) {
         this.employee_id = employee_id;
         this.r_number = r_number;
+        this.hotel_id = hotel_id;
         this.start_time = start_time;
         this.end_time = end_time;
     }
@@ -71,13 +84,40 @@ public class Schedule implements Serializable {
         this.end_time = end_time;
     }
 
+    public String getHotel_id() {
+        return hotel_id;
+    }
+
+    public void setHotel_id(String hotel_id) {
+        this.hotel_id = hotel_id;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
     @Override
     public String toString() {
         return "Schedule{" +
                 "employee_id=" + employee_id +
                 ", r_number=" + r_number +
+                ", hotel_id='" + hotel_id + '\'' +
                 ", start_time=" + start_time +
                 ", end_time=" + end_time +
+                ", employee=" + employee +
+                ", room=" + room +
                 '}';
     }
 }

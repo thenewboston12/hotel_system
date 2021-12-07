@@ -126,6 +126,14 @@ public class Hotel {
         this.h_services = h_services;
     }
 
+    public Set<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(Set<Employee> employees) {
+        this.employees = employees;
+    }
+
     @Override
     public String toString() {
         return "Hotel{" +
@@ -137,6 +145,7 @@ public class Hotel {
                 ", h_telephones=" + h_telephones +
                 ", h_roomtypes=" + h_roomtypes +
                 ", h_services=" + h_services +
+                ", employees=" + employees +
                 '}';
     }
 }

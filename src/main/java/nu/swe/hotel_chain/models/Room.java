@@ -1,9 +1,12 @@
 package nu.swe.hotel_chain.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "room")
@@ -36,6 +39,14 @@ public class Room implements Serializable {
     })
     @JsonBackReference
     private RoomType roomType;
+
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<Reservation> reservation = new HashSet<>();
+
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<Schedule> schedules = new HashSet<>();
 
     public Room(){}
 
@@ -104,6 +115,22 @@ public class Room implements Serializable {
         this.roomType = roomType;
     }
 
+    public Set<Reservation> getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Set<Reservation> reservation) {
+        this.reservation = reservation;
+    }
+
+    public Set<Schedule> getSchedules() {
+        return schedules;
+    }
+
+    public void setSchedules(Set<Schedule> schedules) {
+        this.schedules = schedules;
+    }
+
     @Override
     public String toString() {
         return "Room{" +
@@ -113,6 +140,9 @@ public class Room implements Serializable {
                 ", r_floor=" + r_floor +
                 ", is_clean=" + is_clean +
                 ", is_occupied=" + is_occupied +
+                ", roomType=" + roomType +
+                ", reservation=" + reservation +
+                ", schedules=" + schedules +
                 '}';
     }
 }

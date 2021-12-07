@@ -67,13 +67,22 @@ public class Users {
         this.employee = employee;
     }
 
+    public Guest getGuest() {
+        return guest;
+    }
+
+    public void setGuest(Guest guest) {
+        this.guest = guest;
+    }
+
     @Override
     public String toString() {
         return "Users{" +
                 "email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", role=" + role +
+                ", role='" + role + '\'' +
                 ", employee=" + employee +
+                ", guest=" + guest +
                 '}';
     }
 }

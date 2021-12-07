@@ -1,6 +1,9 @@
 package nu.swe.hotel_chain.models;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -36,6 +39,14 @@ public class RoomPrice implements Serializable {
 
     @Column(name = "sunday")
     private Float sunday;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumns({
+            @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", insertable = false, updatable = false),
+            @JoinColumn(name = "r_type", referencedColumnName = "r_type", insertable = false, updatable = false)
+    })
+    @JsonBackReference
+    private RoomType room_type;
 
     public RoomPrice() {
     }
@@ -135,18 +146,35 @@ public class RoomPrice implements Serializable {
         this.sunday = sunday;
     }
 
+    public Float getMonday() {
+        return monday;
+    }
+
+    public void setMonday(Float monday) {
+        this.monday = monday;
+    }
+
+    public RoomType getRoom_type() {
+        return room_type;
+    }
+
+    public void setRoom_type(RoomType room_type) {
+        this.room_type = room_type;
+    }
+
     @Override
     public String toString() {
         return "RoomPrice{" +
                 "hotel_id='" + hotel_id + '\'' +
                 ", r_type='" + r_type + '\'' +
-                ", moday=" + monday +
+                ", monday=" + monday +
                 ", tuesday=" + tuesday +
                 ", wednesday=" + wednesday +
                 ", thursday=" + thursday +
                 ", friday=" + friday +
                 ", saturday=" + saturday +
                 ", sunday=" + sunday +
+                ", room_type=" + room_type +
                 '}';
     }
 }

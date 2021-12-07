@@ -57,12 +57,20 @@ public class Telephone implements Serializable {
         this.h_phone = h_phone;
     }
 
-    /*ToString()*/
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
+    }
+
     @Override
     public String toString() {
         return "Telephone{" +
-                "hotel_id=" + hotel_id +
-                ",h_phone='" + h_phone + '\'' +
-                "}";
+                "hotel_id='" + hotel_id + '\'' +
+                ", h_phone='" + h_phone + '\'' +
+                ", hotel=" + hotel +
+                '}';
     }
 }

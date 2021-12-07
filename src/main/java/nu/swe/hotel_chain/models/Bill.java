@@ -7,17 +7,15 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "bills")
-@IdClass(BillId.class)
 public class Bill {
     @Id
-    @Column(name = "guest_id")
-    private int guest_id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "bill_id")
+    private int bill_id;
 
-    @Id
     @Column(name = "res_id")
     private int res_id;
 
-    @Id
     @Column(name = "hotel_id")
     private String hotel_id;
 
@@ -31,14 +29,11 @@ public class Bill {
     private Timestamp time;
 
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL, optional = false)
-    @JoinColumns({
-            @JoinColumn(name = "guest_id", referencedColumnName = "guest_id", insertable = false, updatable = false),
-            @JoinColumn(name = "res_id", referencedColumnName = "res_id", insertable = false, updatable = false)
-    })
+    @JoinColumn(name = "res_id", referencedColumnName = "res_id", insertable = false, updatable = false)
     @JsonBackReference
     private Reservation reservation;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumns({
             @JoinColumn(name = "service_type", referencedColumnName = "service_type", insertable = false, updatable = false),
             @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", insertable = false, updatable = false)
@@ -49,8 +44,8 @@ public class Bill {
 
     public Bill(){}
 
-    public Bill(int guest_id, int res_id, String hotel_id, String service_type, float total_price, Timestamp time) {
-        this.guest_id = guest_id;
+    public Bill(int bill_id, int res_id, String hotel_id, String service_type, float total_price, Timestamp time) {
+        this.bill_id = bill_id;
         this.res_id = res_id;
         this.hotel_id = hotel_id;
         this.service_type = service_type;
@@ -66,12 +61,12 @@ public class Bill {
         this.time = time;
     }
 
-    public int getGuest_id() {
-        return guest_id;
+    public int getBill_id() {
+        return bill_id;
     }
 
-    public void setGuest_id(int guest_id) {
-        this.guest_id = guest_id;
+    public void setBill_id(int bill_id) {
+        this.bill_id = bill_id;
     }
 
     public int getRes_id() {
@@ -133,7 +128,7 @@ public class Bill {
     @Override
     public String toString() {
         return "Bill{" +
-                "guest_id=" + guest_id +
+                "bill_id=" + bill_id +
                 ", res_id=" + res_id +
                 ", hotel_id='" + hotel_id + '\'' +
                 ", service_type='" + service_type + '\'' +

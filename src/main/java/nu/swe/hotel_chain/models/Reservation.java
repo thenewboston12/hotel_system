@@ -11,7 +11,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "reservations")
-@IdClass(ReservationId.class)
 public class Reservation implements Serializable {
 
     @Id
@@ -19,7 +18,6 @@ public class Reservation implements Serializable {
     @Column(name = "res_id")
     private int res_id;
 
-    @Id
     @Column(name = "guest_id")
     private int guest_id;
 
@@ -43,6 +41,14 @@ public class Reservation implements Serializable {
     @JoinColumn(name = "guest_id", referencedColumnName = "guest_id", insertable = false, updatable = false)
     @JsonBackReference
     private Guest guest;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumns({
+            @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", insertable = false, updatable = false),
+            @JoinColumn(name = "r_number", referencedColumnName = "r_number", insertable = false, updatable = false)
+    })
+    @JsonBackReference
+    private Room room;
 
     public Reservation(){}
 
@@ -111,6 +117,30 @@ public class Reservation implements Serializable {
         this.check_out = check_out;
     }
 
+    public Set<Bill> getBills() {
+        return bills;
+    }
+
+    public void setBills(Set<Bill> bills) {
+        this.bills = bills;
+    }
+
+    public Guest getGuest() {
+        return guest;
+    }
+
+    public void setGuest(Guest guest) {
+        this.guest = guest;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
     @Override
     public String toString() {
         return "Reservation{" +
@@ -118,8 +148,11 @@ public class Reservation implements Serializable {
                 ", guest_id=" + guest_id +
                 ", hotel_id='" + hotel_id + '\'' +
                 ", r_number=" + r_number +
-                ", check_in_date=" + check_in +
-                ", check_out_date=" + check_out +
+                ", check_in=" + check_in +
+                ", check_out=" + check_out +
+                ", bills=" + bills +
+                ", guest=" + guest +
+                ", room=" + room +
                 '}';
     }
 }
