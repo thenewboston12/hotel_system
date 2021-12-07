@@ -150,8 +150,15 @@ ALTER TABLE public.hotelphone OWNER TO postgres;
 CREATE TABLE public.hotelroomtype (
     hotel_id character varying(10) NOT NULL,
     r_type character varying(20) NOT NULL,
-    size double precision,
-    capacity integer
+    size double precision NOT NULL,
+    capacity integer NOT NULL,
+    monday real NOT NULL,
+    tuesday real NOT NULL,
+    wednesday real NOT NULL,
+    thursday real NOT NULL,
+    saturday real NOT NULL,
+    sunday real NOT NULL,
+    friday real
 );
 
 
@@ -202,25 +209,6 @@ CREATE TABLE public.room (
 
 
 ALTER TABLE public.room OWNER TO postgres;
-
---
--- Name: roomprice; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.roomprice (
-    hotel_id character varying(10) NOT NULL,
-    r_type character varying(20) NOT NULL,
-    monday real,
-    tuesday real,
-    wednesday real,
-    thursday real,
-    friday real,
-    saturday real,
-    sunday real
-);
-
-
-ALTER TABLE public.roomprice OWNER TO postgres;
 
 --
 -- Name: schedule; Type: TABLE; Schema: public; Owner: postgres
@@ -325,15 +313,15 @@ Hilton_Alm	8 (727) 320 4221
 -- Data for Name: hotelroomtype; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.hotelroomtype (hotel_id, r_type, size, capacity) FROM stdin;
-Hilton_Ast	single-bedroom	50	1
-Hilton_Ast	suite	100	2
-Hilton_Ast	penthouse	260	12
-Hilton_Ast	double-bedroom	75	2
-Prime_Ast	single-bedroom	30	1
-Prime_Ast	suite	75	2
-Prime_Ast	penthouse	150	8
-Prime_Ast	double-bedroom	50	2
+COPY public.hotelroomtype (hotel_id, r_type, size, capacity, monday, tuesday, wednesday, thursday, saturday, sunday, friday) FROM stdin;
+Hilton_Ast	single-bedroom	50	1	50	50	50	50	75	150	50
+Hilton_Ast	suite	100	2	100	100	100	100	100	160	100
+Hilton_Ast	penthouse	260	12	200	200	200	200	200	200	200
+Hilton_Ast	double-bedroom	75	2	75	75	80	52	75	190	52
+Prime_Ast	single-bedroom	30	1	30	30	30	30	30	30	30
+Prime_Ast	suite	75	2	75	75	75	80	80	100	80
+Prime_Ast	penthouse	150	8	150	150	250	360	300	300	360
+Prime_Ast	double-bedroom	50	2	50	70	60	60	60	60	60
 \.
 
 
@@ -363,14 +351,6 @@ COPY public.room (r_number, hotel_id, r_type, r_floor, is_clean, is_occupied) FR
 212	Prime_Ast	single-bedroom	2	f	f
 312	Prime_Ast	single-bedroom	3	f	t
 512	Prime_Ast	double-bedroom	5	t	t
-\.
-
-
---
--- Data for Name: roomprice; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.roomprice (hotel_id, r_type, monday, tuesday, wednesday, thursday, friday, saturday, sunday) FROM stdin;
 \.
 
 
@@ -515,14 +495,6 @@ ALTER TABLE ONLY public.room
 
 
 --
--- Name: roomprice roomprice_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.roomprice
-    ADD CONSTRAINT roomprice_pkey PRIMARY KEY (r_type, hotel_id);
-
-
---
 -- Name: schedule schedule_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -640,14 +612,6 @@ ALTER TABLE ONLY public.reservations
 
 ALTER TABLE ONLY public.room
     ADD CONSTRAINT room_fk FOREIGN KEY (hotel_id, r_type) REFERENCES public.hotelroomtype(hotel_id, r_type) ON UPDATE CASCADE ON DELETE SET NULL;
-
-
---
--- Name: roomprice roomprice_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.roomprice
-    ADD CONSTRAINT roomprice_fk FOREIGN KEY (r_type, hotel_id) REFERENCES public.hotelroomtype(r_type, hotel_id) ON UPDATE CASCADE ON DELETE SET NULL;
 
 
 --
