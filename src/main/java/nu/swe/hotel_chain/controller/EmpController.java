@@ -25,12 +25,12 @@ public class EmpController {
         return this.empService.getEmployees();
     }
 
-    @GetMapping(path = "email/{{email}}")
+    @GetMapping(path = "email/{email}")
     public List<Employee> getEmployeeByEmail(@PathVariable("email") String email){
         return this.empService.getEmployeeByEmail(email);
     }
 
-    @GetMapping(path = "role/{{role}}")
+    @GetMapping(path = "role/{role}")
     public List<Employee> getEmployeeByRole(@PathVariable("role") String role){
         return this.empService.getEmployeeByRole(role);
     }

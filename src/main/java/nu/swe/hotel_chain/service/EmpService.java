@@ -25,6 +25,6 @@ public class EmpService {
     }
 
     public List<Employee> getEmployeeByRole(String role) {
-        return this.empRepository.findEmployeeByE_email(role);
+        return this.empRepository.findEmployeeByRole(role);
     }
 }

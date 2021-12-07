@@ -8,14 +8,16 @@ import javax.persistence.*;
 @Table(name = "users")
 public class Users {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
     @Column(name = "email")
     private String email;
 
     @Column(name = "password")
     private String password;
 
-//    public static enum Role{Staff, Guest, Clerk, Manager}
     @Column(name = "role")
     private String role;
 
@@ -26,10 +28,6 @@ public class Users {
         this.password = password;
         this.role = role;
     }
-
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
-    @JsonManagedReference(value = "employee-user")
-    private Employee employee;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     @JsonManagedReference(value = "guest-user")
@@ -59,14 +57,6 @@ public class Users {
         this.role = role;
     }
 
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-
     public Guest getGuest() {
         return guest;
     }
@@ -81,7 +71,6 @@ public class Users {
                 "email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
-                ", employee=" + employee +
                 ", guest=" + guest +
                 '}';
     }

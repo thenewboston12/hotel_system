@@ -48,11 +48,6 @@ public class Guest {
     @JsonManagedReference(value = "reservation-guest")
     private Set<Reservation> reservations = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "g_email", referencedColumnName = "email", insertable = false, updatable = false)
-    @JsonBackReference(value = "guest-user")
-    private Users user;
-
     public Guest (){
 
     }
@@ -170,14 +165,6 @@ public class Guest {
         this.reservations = reservations;
     }
 
-    public Users getUser() {
-        return user;
-    }
-
-    public void setUser(Users user) {
-        this.user = user;
-    }
-
     @Override
     public String toString() {
         return "Guest{" +
@@ -192,7 +179,6 @@ public class Guest {
                 ", gSname='" + gSname + '\'' +
                 ", gEmail='" + gEmail + '\'' +
                 ", reservations=" + reservations +
-                ", user=" + user +
                 '}';
     }
 }
