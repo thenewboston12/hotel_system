@@ -51,11 +51,11 @@ public class RoomType implements Serializable {
 
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "hotel_id", nullable = false, unique = true, insertable = false, updatable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "roomType-hotel")
     private Hotel hotel;
 
     @OneToMany(mappedBy = "roomType", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "room-roomType")
     private Set<Room> rooms = new HashSet<>();
 
     public RoomType(){}

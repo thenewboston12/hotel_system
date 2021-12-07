@@ -45,12 +45,12 @@ public class Guest {
     private String gEmail;
 
     @OneToMany(mappedBy = "guest", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "reservation-guest")
     private Set<Reservation> reservations = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "g_email", referencedColumnName = "email", insertable = false, updatable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "guest-user")
     private Users user;
 
     public Guest (){

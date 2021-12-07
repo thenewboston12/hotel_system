@@ -31,7 +31,7 @@ public class Schedule implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "employee_id", referencedColumnName = "employee_id", insertable = false, updatable = false, nullable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "schedule-employee")
     private Employee employee;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -39,7 +39,7 @@ public class Schedule implements Serializable {
             @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", insertable = false, updatable = false),
             @JoinColumn(name = "r_number", referencedColumnName = "r_number", insertable = false, updatable = false)
     })
-    @JsonBackReference
+    @JsonBackReference(value = "schedule-room")
     private Room room;
 
     public Schedule(){}

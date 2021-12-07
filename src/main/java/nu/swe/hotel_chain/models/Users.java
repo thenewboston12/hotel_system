@@ -28,11 +28,11 @@ public class Users {
     }
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
-    @JsonManagedReference
+    @JsonManagedReference(value = "employee-user")
     private Employee employee;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
-    @JsonManagedReference
+    @JsonManagedReference(value = "guest-user")
     private Guest guest;
 
     public String getEmail() {

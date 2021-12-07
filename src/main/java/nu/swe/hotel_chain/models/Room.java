@@ -37,15 +37,15 @@ public class Room implements Serializable {
             @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", insertable = false, updatable = false),
             @JoinColumn(name = "r_type", referencedColumnName = "r_type", insertable = false, updatable = false)
     })
-    @JsonBackReference
+    @JsonBackReference(value = "room-roomType")
     private RoomType roomType;
 
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "reservation-room")
     private Set<Reservation> reservation = new HashSet<>();
 
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "schedule-room")
     private Set<Schedule> schedules = new HashSet<>();
 
     public Room(){}

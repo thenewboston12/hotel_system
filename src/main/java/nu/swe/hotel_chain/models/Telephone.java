@@ -21,7 +21,7 @@ public class Telephone implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "hotel_id", nullable = false, insertable = false, updatable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "telephone-hotel")
     private Hotel hotel;
 
     /*Constructors*/

@@ -25,11 +25,11 @@ public class Service implements Serializable {
 
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "hotel_id", unique = true, nullable = false, insertable = false, updatable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "service-hotel")
     private Hotel hotel;
 
     @OneToMany(mappedBy = "service", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "bill-service")
     private Set<Bill> bills = new HashSet<>();
 
     public Service(){

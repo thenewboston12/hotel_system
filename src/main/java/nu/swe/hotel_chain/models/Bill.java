@@ -9,8 +9,8 @@ import java.sql.Timestamp;
 @Table(name = "bills")
 public class Bill {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "bill_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "bill_id", unique = true)
     private int bill_id;
 
     @Column(name = "res_id")
@@ -30,7 +30,7 @@ public class Bill {
 
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "res_id", referencedColumnName = "res_id", insertable = false, updatable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "bill-reservation")
     private Reservation reservation;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -38,7 +38,7 @@ public class Bill {
             @JoinColumn(name = "service_type", referencedColumnName = "service_type", insertable = false, updatable = false),
             @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", insertable = false, updatable = false)
     })
-    @JsonBackReference
+    @JsonBackReference(value = "bill-service")
     private Service service;
 
 

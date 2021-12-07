@@ -3,10 +3,7 @@ package nu.swe.hotel_chain.controller;
 import nu.swe.hotel_chain.models.Bill;
 import nu.swe.hotel_chain.service.BillService;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +21,22 @@ public class BillController {
     //GET ALL BILLS
     public List<Bill> getBills(){
         return this.billService.getBills();
+    }
+
+    @GetMapping(path = "{bill_id}")
+    public List<Bill> getBill(@PathVariable("bill_id") String bill_id){
+        Integer bill_id_int = Integer.parseInt(bill_id);
+        return this.billService.getBill(bill_id_int);
+    }
+
+    @GetMapping(path = "res_id/{res_id}")
+    public List<Bill> getBillsByRes_id(@PathVariable("res_id") String res_id){
+        Integer res_id_int = Integer.parseInt(res_id);
+        return this.billService.getBillsByRes_id(res_id_int);
+    }
+
+    @PostMapping(path = "creteBillForService")
+    public void createNewBillForService(@RequestBody Bill bill){
+        this.billService.createNewBillForService(bill);
     }
 }

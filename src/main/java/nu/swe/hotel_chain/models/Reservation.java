@@ -34,12 +34,12 @@ public class Reservation implements Serializable {
     private LocalDate check_out;
 
     @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "bill-reservation")
     private Set<Bill> bills = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "guest_id", referencedColumnName = "guest_id", insertable = false, updatable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "reservation-guest")
     private Guest guest;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -47,7 +47,7 @@ public class Reservation implements Serializable {
             @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", insertable = false, updatable = false),
             @JoinColumn(name = "r_number", referencedColumnName = "r_number", insertable = false, updatable = false)
     })
-    @JsonBackReference
+    @JsonBackReference(value = "reservation-room")
     private Room room;
 
     public Reservation(){}

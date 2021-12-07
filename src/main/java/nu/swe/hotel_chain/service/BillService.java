@@ -19,4 +19,16 @@ public class BillService {
     public List<Bill> getBills(){
         return this.billRepository.findAll();
     }
+
+    public List<Bill> getBill(Integer bill_id) {
+        return this.billRepository.findByBill_id(bill_id);
+    }
+
+    public List<Bill> getBillsByRes_id(Integer res_id_int) {
+        return this.billRepository.findByRes_id(res_id_int);
+    }
+
+    public void createNewBillForService(Bill bill) {
+        this.billRepository.save(bill);
+    }
 }

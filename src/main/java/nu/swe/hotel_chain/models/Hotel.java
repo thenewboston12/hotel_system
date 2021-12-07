@@ -30,19 +30,19 @@ public class Hotel implements Serializable {
     private String h_country;
 
     @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "telephone-hotel")
     private Set<Telephone> h_telephones = new HashSet<>();
 
     @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "roomType-hotel")
     private Set<RoomType> h_roomtypes = new HashSet<>();
 
     @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "service-hotel")
     private Set<Service> h_services = new HashSet<>();
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "employee-hotel")
     private Set<Employee> employees = new HashSet<>();
 
     public Hotel(){
