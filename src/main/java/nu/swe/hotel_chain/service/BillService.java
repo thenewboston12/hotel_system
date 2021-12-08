@@ -31,4 +31,12 @@ public class BillService {
     public void createNewBillForService(Bill bill) {
         this.billRepository.save(bill);
     }
+
+    public List<Bill> getBillsByGuest_idAndRes_id(Integer guest_id_int, Integer res_id_int) {
+        return this.billRepository.findByGuest_idAndRes_id(guest_id_int, res_id_int);
+    }
+
+    public List<Bill> getBillsByGuest_id(Integer guest_id_int) {
+        return this.billRepository.findByGuest_id(guest_id_int);
+    }
 }

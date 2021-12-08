@@ -245,11 +245,26 @@ ALTER TABLE public.services OWNER TO postgres;
 CREATE TABLE public.users (
     email character varying NOT NULL,
     password character varying NOT NULL,
-    role public.role
+    role character varying(16),
+    id integer NOT NULL
 );
 
 
 ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.users ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
 
 --
 -- Data for Name: bills; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -257,6 +272,8 @@ ALTER TABLE public.users OWNER TO postgres;
 
 COPY public.bills (res_id, hotel_id, service_type, total_price, "time", bill_id) FROM stdin;
 3	Hilton_Ast	Breakfast	10000	2021-12-25 10:23:54	1
+2	Hilton_Ast	SPA	20000	2021-12-07 23:32:30	3
+2	Hilton_Ast	Breakfast	10000	2021-12-08 20:42:30	4
 \.
 
 
@@ -375,6 +392,12 @@ Cinema	Hilton_Ast	5000
 Restaurant	Hilton_Ast	30000
 Snacks_in_the_room	Hilton_Ast	5000
 Clean_room	Hilton_Ast	0
+Chek_out	Hilton_Ast	0
+Chek_out	Hilton_Alm	0
+Chek_out	Hilton_NY	0
+Chek_out	Hilton_Mos	0
+Chek_out	Hilton_Bev	0
+Chek_out	Prime_Ast	0
 \.
 
 
@@ -382,14 +405,14 @@ Clean_room	Hilton_Ast	0
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.users (email, password, role) FROM stdin;
-ainur.nurbek.@gmail.com	1234	Guest
-berik.nurbek@gmail.com	1234	Guest
-azamat.nurbek@gmail.com	1234	Guest
-stas.komisarenko@gmail.com	1234	Guest
-Kairat@gmail.com	1234	Staff
-Aset@mail.com	1234	Clerk
-Aidana@gmail.com	1234	Manager
+COPY public.users (email, password, role, id) FROM stdin;
+ainur.nurbek.@gmail.com	1234	Guest	1
+berik.nurbek@gmail.com	1234	Guest	2
+azamat.nurbek@gmail.com	1234	Guest	3
+stas.komisarenko@gmail.com	1234	Guest	4
+Kairat@gmail.com	1234	Staff	5
+Aset@mail.com	1234	Clerk	6
+Aidana@gmail.com	1234	Manager	7
 \.
 
 
@@ -397,14 +420,14 @@ Aidana@gmail.com	1234	Manager
 -- Name: bills_bill_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.bills_bill_id_seq', 1, true);
+SELECT pg_catalog.setval('public.bills_bill_id_seq', 4, true);
 
 
 --
 -- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.hibernate_sequence', 1, false);
+SELECT pg_catalog.setval('public.hibernate_sequence', 1, true);
 
 
 --
@@ -412,6 +435,13 @@ SELECT pg_catalog.setval('public.hibernate_sequence', 1, false);
 --
 
 SELECT pg_catalog.setval('public.reservations_res_id_seq', 5, true);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 1, false);
 
 
 --
@@ -503,14 +533,6 @@ ALTER TABLE ONLY public.schedule
 
 
 --
--- Name: services service_type; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.services
-    ADD CONSTRAINT service_type UNIQUE (service_type);
-
-
---
 -- Name: services services_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -519,11 +541,19 @@ ALTER TABLE ONLY public.services
 
 
 --
--- Name: users user_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: users unique_users_email; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.users
-    ADD CONSTRAINT user_pk PRIMARY KEY (email);
+    ADD CONSTRAINT unique_users_email UNIQUE (email);
+
+
+--
+-- Name: users users_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pk PRIMARY KEY (id);
 
 
 --

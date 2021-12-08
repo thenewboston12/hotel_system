@@ -11,4 +11,9 @@ import java.util.List;
 
 @Repository
 public interface EmpRepository extends JpaRepository<Employee, Integer> {
+    @Query(value = "select E from Employee as E where E.e_email = ?1")
+    public List<Employee> findEmployeeByE_email(String email);
+
+    @Query(value = "select E from  Employee as E where exists (select U from Users as U where U.email = E.e_email and U.role = ?1)")
+    public List<Employee> findEmployeeByRole(String role);
 }
