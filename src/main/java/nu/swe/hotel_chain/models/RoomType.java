@@ -49,7 +49,7 @@ public class RoomType implements Serializable {
     @Column(name = "sunday")
     private Float sunday;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "hotel_id", nullable = false, unique = true, insertable = false, updatable = false)
     @JsonBackReference(value = "roomType-hotel")
     private Hotel hotel;

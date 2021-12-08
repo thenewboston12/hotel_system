@@ -29,12 +29,12 @@ public class Schedule implements Serializable {
     @Column(name = "end_time")
     private Timestamp end_time;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", referencedColumnName = "employee_id", insertable = false, updatable = false, nullable = false)
     @JsonBackReference(value = "schedule-employee")
     private Employee employee;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
             @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", insertable = false, updatable = false),
             @JoinColumn(name = "r_number", referencedColumnName = "r_number", insertable = false, updatable = false)

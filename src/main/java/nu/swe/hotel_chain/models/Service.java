@@ -23,7 +23,7 @@ public class Service implements Serializable {
     @Column(name = "s_price")
     private double s_price;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "hotel_id", unique = true, nullable = false, insertable = false, updatable = false)
     @JsonBackReference(value = "service-hotel")
     private Hotel hotel;

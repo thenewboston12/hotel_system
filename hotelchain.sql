@@ -82,6 +82,10 @@ CREATE TABLE public.employee (
 
 ALTER TABLE public.employee OWNER TO postgres;
 
+--
+-- Name: employee_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
 ALTER TABLE public.employee ALTER COLUMN employee_id ADD GENERATED ALWAYS AS IDENTITY (
     SEQUENCE NAME public.employee_id_seq
     START WITH 1
@@ -90,6 +94,7 @@ ALTER TABLE public.employee ALTER COLUMN employee_id ADD GENERATED ALWAYS AS IDE
     NO MAXVALUE
     CACHE 1
 );
+
 
 --
 -- Name: guest; Type: TABLE; Schema: public; Owner: postgres
@@ -111,6 +116,10 @@ CREATE TABLE public.guest (
 
 ALTER TABLE public.guest OWNER TO postgres;
 
+--
+-- Name: guest_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
 ALTER TABLE public.guest ALTER COLUMN guest_id ADD GENERATED ALWAYS AS IDENTITY (
     SEQUENCE NAME public.guest_id_seq
     START WITH 1
@@ -119,6 +128,7 @@ ALTER TABLE public.guest ALTER COLUMN guest_id ADD GENERATED ALWAYS AS IDENTITY 
     NO MAXVALUE
     CACHE 1
 );
+
 
 --
 -- Name: hibernate_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -293,6 +303,9 @@ COPY public.bills (res_id, hotel_id, service_type, total_price, "time", bill_id)
 2	Hilton_Ast	SPA	20000	2021-12-07 23:32:30	3
 2	Hilton_Ast	Breakfast	10000	2021-12-08 20:42:30	4
 2	Hilton_Ast	Breakfast	10000	2021-12-08 20:42:30	5
+1	Hilton_Ast	Breakfast	10000	2021-12-08 18:31:05.562	6
+1	Hilton_Ast	SPA	20000	2021-12-08 18:47:40.669	7
+2	Hilton_Ast	Check_out	200	2021-12-08 21:16:29.728	9
 \.
 
 
@@ -301,9 +314,9 @@ COPY public.bills (res_id, hotel_id, service_type, total_price, "time", bill_id)
 --
 
 COPY public.employee (employee_id, name, sname, mobile_n, salary, hotel_id, emp_email, m_w_hours) FROM stdin;
-1	Kairat	Nurtas	8(707) 576 1124	100000	Hilton_Ast	Kairat@gmail.com	12
 2	Aset	Tashenov	8(776) 865 7777	50000	Hilton_Ast	Aset@mail.com	2
 3	Aidana	Askarovna	8(771) 010 9291	50000	Hilton_Ast	Aidana@gmail.com	12
+1	Kairat	Nurtas	8(707) 576 1124	100000	Hilton_Ast	Kairat@gmail.com	5
 \.
 
 
@@ -350,14 +363,14 @@ Hilton_Alm	8 (727) 320 4221
 --
 
 COPY public.hotelroomtype (hotel_id, r_type, size, capacity, monday, tuesday, wednesday, thursday, saturday, sunday, friday) FROM stdin;
-Hilton_Ast	single-bedroom	50	1	50	50	50	50	75	150	50
 Hilton_Ast	suite	100	2	100	100	100	100	100	160	100
 Hilton_Ast	penthouse	260	12	200	200	200	200	200	200	200
-Hilton_Ast	double-bedroom	75	2	75	75	80	52	75	190	52
-Prime_Ast	single-bedroom	30	1	30	30	30	30	30	30	30
 Prime_Ast	suite	75	2	75	75	75	80	80	100	80
 Prime_Ast	penthouse	150	8	150	150	250	360	300	300	360
-Prime_Ast	double-bedroom	50	2	50	70	60	60	60	60	60
+Hilton_Ast	single	50	1	50	50	50	50	75	150	50
+Hilton_Ast	double	75	2	75	75	80	52	75	190	52
+Prime_Ast	single	30	1	30	30	30	30	30	30	30
+Prime_Ast	double	50	2	50	70	60	60	60	60	60
 \.
 
 
@@ -371,6 +384,7 @@ COPY public.reservations (res_id, guest_id, hotel_id, r_number, check_in, check_
 3	4	Hilton_Ast	305	2021-12-29	2021-12-31
 4	2	Prime_Ast	212	2021-12-27	2021-12-31
 5	3	Prime_Ast	312	2021-12-25	2021-12-29
+6	1	Hilton_Ast	501	2021-12-20	2021-12-27
 \.
 
 
@@ -379,14 +393,14 @@ COPY public.reservations (res_id, guest_id, hotel_id, r_number, check_in, check_
 --
 
 COPY public.room (r_number, hotel_id, r_type, r_floor, is_clean, is_occupied) FROM stdin;
-201	Hilton_Ast	single-bedroom	2	t	f
 305	Hilton_Ast	suite	3	f	f
 501	Hilton_Ast	penthouse	5	t	f
-202	Hilton_Ast	single-bedroom	2	f	f
-203	Hilton_Ast	single-bedroom	2	f	f
-212	Prime_Ast	single-bedroom	2	f	f
-312	Prime_Ast	single-bedroom	3	f	t
-512	Prime_Ast	double-bedroom	5	t	t
+201	Hilton_Ast	single	2	t	f
+202	Hilton_Ast	single	2	f	f
+203	Hilton_Ast	single	2	f	f
+212	Prime_Ast	single	2	f	f
+312	Prime_Ast	single	3	f	t
+512	Prime_Ast	double	5	t	t
 \.
 
 
@@ -411,12 +425,12 @@ Cinema	Hilton_Ast	5000
 Restaurant	Hilton_Ast	30000
 Snacks_in_the_room	Hilton_Ast	5000
 Clean_room	Hilton_Ast	0
-Chek_out	Hilton_Ast	0
-Chek_out	Hilton_Alm	0
-Chek_out	Hilton_NY	0
-Chek_out	Hilton_Mos	0
-Chek_out	Hilton_Bev	0
-Chek_out	Prime_Ast	0
+Check_out	Hilton_Ast	0
+Check_out	Hilton_Alm	0
+Check_out	Hilton_NY	0
+Check_out	Hilton_Mos	0
+Check_out	Hilton_Bev	0
+Check_out	Prime_Ast	0
 \.
 
 
@@ -439,7 +453,21 @@ Aidana@gmail.com	1234	Manager	7
 -- Name: bills_bill_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.bills_bill_id_seq', 5, true);
+SELECT pg_catalog.setval('public.bills_bill_id_seq', 9, true);
+
+
+--
+-- Name: employee_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.employee_id_seq', 1, false);
+
+
+--
+-- Name: guest_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.guest_id_seq', 1, false);
 
 
 --
@@ -453,7 +481,7 @@ SELECT pg_catalog.setval('public.hibernate_sequence', 1, true);
 -- Name: reservations_res_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.reservations_res_id_seq', 5, true);
+SELECT pg_catalog.setval('public.reservations_res_id_seq', 6, true);
 
 
 --
@@ -580,7 +608,7 @@ ALTER TABLE ONLY public.users
 --
 
 ALTER TABLE ONLY public.bills
-    ADD CONSTRAINT bills_fk FOREIGN KEY (res_id) REFERENCES public.reservations(res_id) ON UPDATE CASCADE ON DELETE SET NULL;
+    ADD CONSTRAINT bills_fk FOREIGN KEY (res_id) REFERENCES public.reservations(res_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -588,7 +616,7 @@ ALTER TABLE ONLY public.bills
 --
 
 ALTER TABLE ONLY public.bills
-    ADD CONSTRAINT bills_fk_service FOREIGN KEY (service_type, hotel_id) REFERENCES public.services(service_type, hotel_id) ON UPDATE CASCADE ON DELETE SET NULL;
+    ADD CONSTRAINT bills_fk_service FOREIGN KEY (service_type, hotel_id) REFERENCES public.services(service_type, hotel_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -612,15 +640,7 @@ ALTER TABLE ONLY public.guest
 --
 
 ALTER TABLE ONLY public.reservations
-    ADD CONSTRAINT guest_id FOREIGN KEY (guest_id) REFERENCES public.guest(guest_id) NOT VALID;
-
-
---
--- Name: services hotel_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.services
-    ADD CONSTRAINT hotel_id FOREIGN KEY (hotel_id) REFERENCES public.hotel(hotel_id);
+    ADD CONSTRAINT guest_id FOREIGN KEY (guest_id) REFERENCES public.guest(guest_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -628,7 +648,7 @@ ALTER TABLE ONLY public.services
 --
 
 ALTER TABLE ONLY public.employee
-    ADD CONSTRAINT hotel_id FOREIGN KEY (hotel_id) REFERENCES public.hotel(hotel_id) NOT VALID;
+    ADD CONSTRAINT hotel_id FOREIGN KEY (hotel_id) REFERENCES public.hotel(hotel_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -636,7 +656,7 @@ ALTER TABLE ONLY public.employee
 --
 
 ALTER TABLE ONLY public.hotelphone
-    ADD CONSTRAINT hotel_id FOREIGN KEY (hotel_id) REFERENCES public.hotel(hotel_id) NOT VALID;
+    ADD CONSTRAINT hotel_id FOREIGN KEY (hotel_id) REFERENCES public.hotel(hotel_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -644,7 +664,15 @@ ALTER TABLE ONLY public.hotelphone
 --
 
 ALTER TABLE ONLY public.hotelroomtype
-    ADD CONSTRAINT hotel_id FOREIGN KEY (hotel_id) REFERENCES public.hotel(hotel_id) NOT VALID;
+    ADD CONSTRAINT hotel_id FOREIGN KEY (hotel_id) REFERENCES public.hotel(hotel_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: services hotel_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.services
+    ADD CONSTRAINT hotel_id FOREIGN KEY (hotel_id) REFERENCES public.hotel(hotel_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -652,7 +680,7 @@ ALTER TABLE ONLY public.hotelroomtype
 --
 
 ALTER TABLE ONLY public.reservations
-    ADD CONSTRAINT reservations_fk FOREIGN KEY (r_number, hotel_id) REFERENCES public.room(r_number, hotel_id);
+    ADD CONSTRAINT reservations_fk FOREIGN KEY (r_number, hotel_id) REFERENCES public.room(r_number, hotel_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -660,7 +688,7 @@ ALTER TABLE ONLY public.reservations
 --
 
 ALTER TABLE ONLY public.room
-    ADD CONSTRAINT room_fk FOREIGN KEY (hotel_id, r_type) REFERENCES public.hotelroomtype(hotel_id, r_type) ON UPDATE CASCADE ON DELETE SET NULL;
+    ADD CONSTRAINT room_fk FOREIGN KEY (hotel_id, r_type) REFERENCES public.hotelroomtype(hotel_id, r_type) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -668,7 +696,7 @@ ALTER TABLE ONLY public.room
 --
 
 ALTER TABLE ONLY public.schedule
-    ADD CONSTRAINT schedule_fk FOREIGN KEY (r_number, hotel_id) REFERENCES public.room(r_number, hotel_id) ON UPDATE CASCADE ON DELETE SET NULL;
+    ADD CONSTRAINT schedule_fk FOREIGN KEY (r_number, hotel_id) REFERENCES public.room(r_number, hotel_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -676,7 +704,7 @@ ALTER TABLE ONLY public.schedule
 --
 
 ALTER TABLE ONLY public.schedule
-    ADD CONSTRAINT schedule_fk_1 FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id);
+    ADD CONSTRAINT schedule_fk_1 FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --

@@ -50,7 +50,7 @@ public class Guest {
     @JsonManagedReference(value = "reservation-guest")
     private Set<Reservation> reservations = new HashSet<>();
 
-//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+//    @OneToOne(fetch = FetchType.LAZY, optional = false)
 //    @JoinColumn(name = "g_email", referencedColumnName = "email", insertable = false, updatable = false, nullable = false)
 //    @JsonBackReference(value = "guest-user")
 //    private Users user;

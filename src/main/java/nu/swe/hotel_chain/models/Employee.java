@@ -38,7 +38,7 @@ public class Employee {
     @Column(name = "hotel_id")
     private String hotel_id;
 
-//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+//    @OneToOne(fetch = FetchType.LAZY, optional = false)
 //    @JoinColumn(name = "emp_email", referencedColumnName = "email", insertable = false, updatable = false, nullable = false)
 //    @JsonBackReference(value = "employee-user")
 //    private Users user;

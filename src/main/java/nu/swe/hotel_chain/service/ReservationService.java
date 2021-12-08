@@ -92,7 +92,7 @@ public class ReservationService {
         if(!optionalReservation.isPresent()){
             throw new IllegalIdException("There is no reservation with id " + res_id);
         }
-        this.reservationRepository.deleteByRes_id(res_id);
+        this.reservationRepository.deleteById(res_id);
         return true;
     }
 }

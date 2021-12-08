@@ -32,7 +32,7 @@ public class Room implements Serializable {
     @Column(name = "is_occupied")
     private boolean is_occupied;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumns({
             @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", insertable = false, updatable = false),
             @JoinColumn(name = "r_type", referencedColumnName = "r_type", insertable = false, updatable = false)

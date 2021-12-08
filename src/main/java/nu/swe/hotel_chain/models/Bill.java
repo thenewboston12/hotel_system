@@ -28,12 +28,12 @@ public class Bill {
     @Column(name = "time")
     private Timestamp time;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "res_id", referencedColumnName = "res_id", insertable = false, updatable = false)
     @JsonBackReference(value = "bill-reservation")
     private Reservation reservation;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
             @JoinColumn(name = "service_type", referencedColumnName = "service_type", insertable = false, updatable = false),
             @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", insertable = false, updatable = false)

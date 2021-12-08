@@ -37,12 +37,12 @@ public class Reservation implements Serializable {
     @JsonManagedReference(value = "bill-reservation")
     private Set<Bill> bills = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "guest_id", referencedColumnName = "guest_id", insertable = false, updatable = false)
     @JsonBackReference(value = "reservation-guest")
     private Guest guest;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
             @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", insertable = false, updatable = false),
             @JoinColumn(name = "r_number", referencedColumnName = "r_number", insertable = false, updatable = false)
