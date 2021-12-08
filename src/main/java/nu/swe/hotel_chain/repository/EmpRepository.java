@@ -16,4 +16,10 @@ public interface EmpRepository extends JpaRepository<Employee, Integer> {
 
     @Query(value = "select E from  Employee as E where exists (select U from Users as U where U.email = E.e_email and U.role = ?1)")
     public List<Employee> findEmployeeByRole(String role);
+
+    @Query(value = "select case when count (E) > 0 then true else false end from Employee as E where E.e_email = ?1")
+    public boolean existsByEmail(String email);
+
+    @Query(value = "select E from Employee as E where E.e_email = ?1")
+    public Employee findByEmail(String email);
 }
