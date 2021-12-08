@@ -29,10 +29,6 @@ public class Users {
         this.role = role;
     }
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
-    @JsonManagedReference(value = "guest-user")
-    private Guest guest;
-
     public String getEmail() {
         return email;
     }
@@ -57,21 +53,12 @@ public class Users {
         this.role = role;
     }
 
-    public Guest getGuest() {
-        return guest;
-    }
-
-    public void setGuest(Guest guest) {
-        this.guest = guest;
-    }
-
     @Override
     public String toString() {
         return "Users{" +
                 "email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
-                ", guest=" + guest +
                 '}';
     }
 }

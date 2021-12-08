@@ -1,10 +1,13 @@
 package nu.swe.hotel_chain.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import nu.swe.hotel_chain.models.Bill;
 import nu.swe.hotel_chain.service.BillService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @RestController
@@ -49,7 +52,34 @@ public class BillController {
     }
 
     @PostMapping(path = "creteBillForService")
-    public void createNewBillForService(@RequestBody Bill bill){
-        this.billService.createNewBillForService(bill);
+    public void createNewBillForService(@RequestBody String json){
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            JsonNode jsonNode = mapper.readTree(json);
+            int res_id = jsonNode.get("res_id").asInt();
+            String hotel_id = "";
+            String service_type = jsonNode.get("service_type").asText();
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            Bill bill = new Bill(res_id, hotel_id, service_type, 0, timestamp);
+            System.out.println(bill);
+            this.billService.createNewBillForService(bill);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @PostMapping(path = "creteBillForCheckOut")
+    public void createNewBillForCheckout(@RequestBody String json){
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            JsonNode jsonNode = mapper.readTree(json);
+            int res_id = jsonNode.get("res_id").asInt();
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            Bill bill = new Bill(res_id, "", "Check_out", 0, timestamp);
+            System.out.println(bill);
+            this.billService.createNewBillForCheckout(bill);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 }
