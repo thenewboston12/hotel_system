@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,6 +71,23 @@ public class ReservationController {
             return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         map.put("message", "reservation deleted successfully");
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    @PutMapping(path = "res_id/{res_id}/edit")
+    // api/reservations/{res_id}/edit
+    public ResponseEntity<Map<String, String>> updateReservationById(@PathVariable("res_id") Integer res_id,
+                                                                     @RequestParam(required = false) Integer r_number,
+                                                                     @RequestParam(required = false) String check_in,
+                                                                     @RequestParam(required = false) String check_out){
+        Map<String, String> map = new HashMap<>();
+        LocalDate check_in_date = LocalDate.parse(check_in);
+        LocalDate check_out_date = LocalDate.parse(check_out);
+        if(!this.reservationService.editReservation(res_id, r_number, check_in_date, check_out_date)){
+            map.put("message", "reservation edition was unsuccessful");
+            return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        map.put("message", "reservation edited successfully");
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }

@@ -10,7 +10,9 @@ import nu.swe.hotel_chain.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -93,6 +95,42 @@ public class ReservationService {
             throw new IllegalIdException("There is no reservation with id " + res_id);
         }
         this.reservationRepository.deleteById(res_id);
+        return true;
+    }
+
+    public boolean editReservation(Integer res_id, Integer r_number, LocalDate check_in, LocalDate check_out) {
+        Optional<Reservation> optionalReservation = this.reservationRepository.findById(res_id);
+        if(!optionalReservation.isPresent()){
+            throw new IllegalIdException("There is no reservation with id " + res_id);
+        }
+
+        Reservation reservation = this.reservationRepository.findById(res_id).get();
+
+        Optional<Room> optionalRoom = this.roomRepository.findById(new RoomId(r_number, reservation.getHotel_id()));
+        if (!optionalRoom.isPresent()){
+            throw new IllegalIdException("There is no room with number " + r_number + " in a hotel with " + reservation.getHotel_id());
+        }
+        if(r_number != null && r_number != 0 && !Objects.equals(reservation.getR_number(), r_number)){
+            reservation.setR_number(r_number);
+        }
+
+        boolean available = this.reservationRepository.checkAvailabilityByR_numberAndDate(r_number, reservation.getHotel_id(), check_in);
+        if (!available){
+            throw new NotAvailableRoomException("The room " + r_number + " in a hotel with id " + reservation.getHotel_id() + " is not available for date " + check_in);
+        }
+        if(check_in != null && !Objects.equals(reservation.getCheck_in(), check_in)){
+            reservation.setCheck_in(check_in);
+        }
+
+        available = this.reservationRepository.checkAvailabilityByR_numberAndDate(r_number, reservation.getHotel_id(), check_out);
+        if (!available){
+            throw new NotAvailableRoomException("The room " + r_number + " in a hotel with id " + reservation.getHotel_id() + " is not available for date " + check_out);
+        }
+        if(check_out != null && !Objects.equals(reservation.getCheck_out(), check_out)){
+            reservation.setCheck_out(check_out);
+        }
+
+        this.reservationRepository.save(reservation);
         return true;
     }
 }

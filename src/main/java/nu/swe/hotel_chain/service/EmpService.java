@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class EmpService {
@@ -36,13 +37,21 @@ public class EmpService {
         return this.empRepository.findEmployeeByRole(role);
     }
 
-    public boolean updateHours(String email, Integer hours) {
+    public boolean updateHours(String email, Integer hours, Integer salary) {
         boolean exists = this.empRepository.existsByEmail(email);
         if (!exists){
             throw new HException("There is no employee with such email");
         }
         Employee employee = this.empRepository.findByEmail(email);
-        employee.setE_hours(hours);
+
+        if(hours != null && hours != 0 && !Objects.equals(employee.getE_hours(), hours)){
+            employee.setE_hours(hours);
+        }
+
+        if(salary != null && salary != 0 && !Objects.equals(employee.getSalary(), salary)){
+            employee.setSalary(salary);
+        }
+
         this.empRepository.save(employee);
         return true;
     }

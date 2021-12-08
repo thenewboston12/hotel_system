@@ -40,7 +40,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query(value = "select R from Reservation as R where R.guest_id = ?1")
     List<Reservation> findByGuest_Id(Integer guest_id);
 
-    @Query(value = "select case when count (R) > 0 then true else false end from Reservation as R where R.r_number = ?1 and R.hotel_id = ?2 and (?3 not between R.check_in and R.check_out)")
+    @Query(value = "select case when count (R) > 0 then true else false end from Reservation as R where (R.r_number != ?1) or (R.r_number = ?1 and R.hotel_id = ?2 and (?3 not between R.check_in and R.check_out))")
     boolean checkAvailabilityByR_numberAndDate(int r_number, String hotel_id, LocalDate check_in);
 
     @Query(value = "delete from Reservation as R where R.res_id = ?1")

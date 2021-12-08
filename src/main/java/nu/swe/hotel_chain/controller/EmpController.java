@@ -42,9 +42,11 @@ public class EmpController {
     @PutMapping(path = "email/{email}/adjustHours")
     // api/employees/email/{email}/adjustHours?hours=
     // Pass Hours request variable
-    public ResponseEntity<Map<String, String>> updateHours(@PathVariable("email") String email, @RequestParam(required = true) Integer hours){
+    public ResponseEntity<Map<String, String>> updateHours(@PathVariable("email") String email,
+                                                           @RequestParam(required = false) Integer hours,
+                                                           @RequestParam(required = false) Integer salary){
         Map<String, String> map = new HashMap<>();
-        if (!this.empService.updateHours(email, hours)){
+        if (!this.empService.updateHours(email, hours, salary)){
             map.put("message", "Update was unsuccessful");
             return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
