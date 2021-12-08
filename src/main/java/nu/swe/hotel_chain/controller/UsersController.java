@@ -8,9 +8,13 @@ import nu.swe.hotel_chain.models.Users;
 import nu.swe.hotel_chain.service.GuestService;
 import nu.swe.hotel_chain.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "api/users")
@@ -30,7 +34,8 @@ public class UsersController {
     }
 
     @PostMapping(path = "/signup")
-    public void registerNewUser(@RequestBody String userAndGuest){
+    public ResponseEntity<Map<String, String>> registerNewUser(@RequestBody String userAndGuest){
+        Map<String, String> map = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
         try {
             JsonNode jsonNode = mapper.readTree(userAndGuest);
@@ -63,8 +68,10 @@ public class UsersController {
             }
 
         }catch(Exception e){
-            throw new HException( e.getMessage());
+            map.put("message", e.getMessage());
+            return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
+        map.put("message", "registration was successful");
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }
