@@ -60,6 +60,7 @@ public class BillController {
 
     @PostMapping(path = "creteBillForService")
     // api/bills/createBillForService
+    // provides only res_id and service_type, others are found in service section through db
     public ResponseEntity<Map<String, String>> createNewBillForService(@RequestBody String json){
         ObjectMapper mapper = new ObjectMapper();
         Map<String, String> map = new HashMap<>();
@@ -69,6 +70,7 @@ public class BillController {
             String hotel_id = "";
             String service_type = jsonNode.get("service_type").asText();
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
             Bill bill = new Bill(res_id, hotel_id, service_type, 0, timestamp);
             this.billService.createNewBillForService(bill);
         }catch (Exception e){
@@ -82,6 +84,7 @@ public class BillController {
 
     @PostMapping(path = "creteBillForCheckOut")
     // api/bills/createBillForCheckOut
+    // provides only res_id
     public ResponseEntity<Map<String, String>> createNewBillForCheckout(@RequestBody String json){
         Map<String, String> map = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
@@ -89,6 +92,7 @@ public class BillController {
             JsonNode jsonNode = mapper.readTree(json);
             int res_id = jsonNode.get("res_id").asInt();
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
             Bill bill = new Bill(res_id, "", "Check_out", 0, timestamp);
             System.out.println(bill);
             this.billService.createNewBillForCheckout(bill);
