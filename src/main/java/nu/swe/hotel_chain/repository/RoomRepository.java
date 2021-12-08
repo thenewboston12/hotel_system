@@ -12,13 +12,13 @@ import java.util.List;
 @Repository
 public interface RoomRepository extends JpaRepository<Room, RoomId> {
     @Query(value = "select R from Room AS R where R.hotel_id = ?1")
-    public List<Room> findRoomByHotel_id(String hotel_id);
+    List<Room> findRoomByHotel_id(String hotel_id);
 
     @Query(value = "select R from Room AS R where R.r_type = ?1")
-    public List<Room> findRoomByR_type(String r_type);
+    List<Room> findRoomByR_type(String r_type);
 
     @Query(value = "select R from Room as R where R.hotel_id = ?1 and R.r_type = ?2")
-    public List<Room> findRoomByHotel_idAndR_type(String hotel_id, String r_type);
+    List<Room> findRoomByHotel_idAndR_type(String hotel_id, String r_type);
 
     @Query(value = "" +
             "select R from Room as R where R.hotel_id = ?1 and R.r_type = ?2 and exists (" +
@@ -26,6 +26,6 @@ public interface RoomRepository extends JpaRepository<Room, RoomId> {
                 "(?3 not between RS.check_in and RS.check_out) and (?4 not between RS.check_in and RS.check_out)" +
             ")"
     )
-    public List<Room> findAvailableRoomsInHotelWithR_Type(String hotel_id, String r_type,
+    List<Room> findAvailableRoomsInHotelWithR_Type(String hotel_id, String r_type,
                                                           LocalDate check_in_date, LocalDate check_out_date);
 }

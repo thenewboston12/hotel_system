@@ -24,4 +24,7 @@ public interface HotelRepository extends JpaRepository<Hotel, String> {
             ")"
     )
     List<Hotel> findAvailableHotels(String destination, String r_type, LocalDate check_in, LocalDate check_out);
+
+    @Query(value = "select H from Hotel as H where H.h_city = ?1")
+    List<Hotel> findByCity(String city);
 }

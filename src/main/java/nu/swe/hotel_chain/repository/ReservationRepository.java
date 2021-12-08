@@ -11,13 +11,13 @@ import java.time.LocalDate;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
     @Query(value = "select case when count (R) > 0 then true else false end from Reservation as R where R.guest_id = ?1")
-    public boolean existsByGuestId(int guest_id);
+    boolean existsByGuestId(int guest_id);
 
     @Query(value = "select case when count (R) > 0 then true else false end from Reservation as R where R.guest_id = ?1 and R.hotel_id = ?2")
-    public boolean existsByIdAndHotel_id(int res_id, String hotel_id);
+    boolean existsByIdAndHotel_id(int res_id, String hotel_id);
 
     @Query(value = "select R.hotel_id from Reservation as R where R.res_id = ?1")
-    public String findHotel_idById(int res_id);
+    String findHotel_idById(int res_id);
 
     @Query(value = "" +
             "select RT from RoomType as RT where exists (" +
@@ -25,11 +25,11 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
                 "select RS from Reservation as RS where RS.r_number = R.r_number and RS.hotel_id = R.hotel_id and RS.res_id = ?1)" +
             ")"
     )
-    public RoomType findRoomTypeById(int res_id);
+    RoomType findRoomTypeById(int res_id);
 
     @Query(value = "select R.check_in from Reservation as R where R.res_id = ?1")
-    public LocalDate findCheckInDateById(int res_id);
+    LocalDate findCheckInDateById(int res_id);
 
     @Query(value = "select R.check_out from Reservation as R where R.res_id = ?1")
-    public LocalDate findCheckOutDateById(int res_id);
+    LocalDate findCheckOutDateById(int res_id);
 }
