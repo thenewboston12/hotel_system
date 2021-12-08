@@ -2,6 +2,7 @@ package nu.swe.hotel_chain.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -42,16 +43,17 @@ public class Guest {
     private String gSname;
 
     @Column(name = "g_email")
+    @NotNull
     private String gEmail;
 
     @OneToMany(mappedBy = "guest", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference(value = "reservation-guest")
     private Set<Reservation> reservations = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "g_email", referencedColumnName = "email", insertable = false, updatable = false)
-    @JsonBackReference(value = "guest-user")
-    private Users user;
+//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+//    @JoinColumn(name = "g_email", referencedColumnName = "email", insertable = false, updatable = false, nullable = false)
+//    @JsonBackReference(value = "guest-user")
+//    private Users user;
 
     public Guest (){
 
@@ -170,13 +172,13 @@ public class Guest {
         this.reservations = reservations;
     }
 
-    public Users getUser() {
-        return user;
-    }
-
-    public void setUser(Users user) {
-        this.user = user;
-    }
+//    public Users getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(Users user) {
+//        this.user = user;
+//    }
 
     @Override
     public String toString() {
@@ -192,7 +194,7 @@ public class Guest {
                 ", gSname='" + gSname + '\'' +
                 ", gEmail='" + gEmail + '\'' +
                 ", reservations=" + reservations +
-                ", user=" + user +
+//                ", user=" + user +
                 '}';
     }
 }

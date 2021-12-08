@@ -2,6 +2,7 @@ package nu.swe.hotel_chain.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -37,10 +38,10 @@ public class Employee {
     @Column(name = "hotel_id")
     private String hotel_id;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "emp_email", referencedColumnName = "email", insertable = false, updatable = false)
-    @JsonBackReference(value = "employee-user")
-    private Users user;
+//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+//    @JoinColumn(name = "emp_email", referencedColumnName = "email", insertable = false, updatable = false, nullable = false)
+//    @JsonBackReference(value = "employee-user")
+//    private Users user;
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference(value = "schedule-employee")
@@ -140,14 +141,14 @@ public class Employee {
     public void setE_hours(int e_hours) {
         this.e_hours = e_hours;
     }
-
-    public Users getUser() {
-        return user;
-    }
-
-    public void setUser(Users user) {
-        this.user = user;
-    }
+//
+//    public Users getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(Users user) {
+//        this.user = user;
+//    }
 
     public Set<Schedule> getSchedules() {
         return schedules;
@@ -176,7 +177,7 @@ public class Employee {
                 ", e_email='" + e_email + '\'' +
                 ", e_hours=" + e_hours +
                 ", hotel_id='" + hotel_id + '\'' +
-                ", user=" + user +
+//                ", user=" + user +
                 ", schedules=" + schedules +
                 ", hotel=" + hotel +
                 '}';
