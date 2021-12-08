@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
@@ -32,4 +33,16 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     @Query(value = "select R.check_out from Reservation as R where R.res_id = ?1")
     LocalDate findCheckOutDateById(int res_id);
+
+    @Query(value = "select R from Reservation as R where R.hotel_id = ?1")
+    List<Reservation> findByHotel_Id(String hotel_id);
+
+    @Query(value = "select R from Reservation as R where R.guest_id = ?1")
+    List<Reservation> findByGuest_Id(Integer guest_id);
+
+    @Query(value = "select case when count (R) > 0 then true else false end from Reservation as R where R.r_number = ?1 and R.hotel_id = ?2 and (?3 not between R.check_in and R.check_out)")
+    boolean checkAvailabilityByR_numberAndDate(int r_number, String hotel_id, LocalDate check_in);
+
+    @Query(value = "delete from Reservation as R where R.res_id = ?1")
+    void deleteByRes_id(Integer res_id);
 }
