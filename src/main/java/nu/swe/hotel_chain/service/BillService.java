@@ -2,6 +2,7 @@ package nu.swe.hotel_chain.service;
 
 import nu.swe.hotel_chain.exceptions.IllegalIdException;
 import nu.swe.hotel_chain.models.Bill;
+import nu.swe.hotel_chain.models.RoomType;
 import nu.swe.hotel_chain.models.ServiceId;
 import nu.swe.hotel_chain.repository.BillRepository;
 import nu.swe.hotel_chain.repository.HotelRepository;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -101,15 +104,48 @@ public class BillService {
         String hotel_id = this.reservationRepository.findHotel_idById(bill.getRes_id());
         bill.setHotel_id(hotel_id);
 
-        float servicePrice = 0;
-        bill.setTotal_price(servicePrice);
-
         exists = this.serviceRepository.existsById(new ServiceId(bill.getService_type(), bill.getHotel_id()));
         if(!exists){
             throw new IllegalIdException("Service with type " + bill.getService_type() + " and hotel id " + bill.getHotel_id() + " does not exist");
         }
 
-        System.out.println(bill);
+        RoomType roomType = this.reservationRepository.findRoomTypeById(bill.getRes_id());
+        LocalDate chek_in_date = this.reservationRepository.findCheckInDateById(bill.getRes_id());
+        LocalDate chek_out_date = this.reservationRepository.findCheckOutDateById(bill.getRes_id());
+        long noOfDays = ChronoUnit.DAYS.between(chek_in_date, chek_out_date);
+
+        int week_day = chek_in_date.getDayOfWeek().getValue();
+        float room_price = 0;
+
+        switch (week_day){
+            case 1:
+                room_price = roomType.getMonday();
+                break;
+            case 2:
+                room_price = roomType.getTuesday();
+                break;
+            case 3:
+                room_price = roomType.getWednesday();
+                break;
+            case 4:
+                room_price = roomType.getThursday();
+                break;
+            case 5:
+                room_price = roomType.getFriday();
+                break;
+            case 6:
+                room_price = roomType.getSaturday();
+                break;
+            case 7:
+                room_price = roomType.getSunday();
+                break;
+            default:
+                room_price = 0;
+                break;
+        }
+
+        float servicePrice = noOfDays * room_price;
+        bill.setTotal_price(servicePrice);
 
         this.billRepository.save(bill);
     }

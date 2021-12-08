@@ -5,10 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import nu.swe.hotel_chain.models.Bill;
 import nu.swe.hotel_chain.service.BillService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "api/bills")
@@ -52,8 +55,9 @@ public class BillController {
     }
 
     @PostMapping(path = "creteBillForService")
-    public void createNewBillForService(@RequestBody String json){
+    public ResponseEntity<Map<String, String>> createNewBillForService(@RequestBody String json){
         ObjectMapper mapper = new ObjectMapper();
+        Map<String, String> map = new HashMap<>();
         try {
             JsonNode jsonNode = mapper.readTree(json);
             int res_id = jsonNode.get("res_id").asInt();
@@ -61,15 +65,19 @@ public class BillController {
             String service_type = jsonNode.get("service_type").asText();
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             Bill bill = new Bill(res_id, hotel_id, service_type, 0, timestamp);
-            System.out.println(bill);
             this.billService.createNewBillForService(bill);
         }catch (Exception e){
             System.out.println(e.getMessage());
+            map.put("message", "Could not create a bill");
+            return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        map.put("message", "successful created bill for service");
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     @PostMapping(path = "creteBillForCheckOut")
-    public void createNewBillForCheckout(@RequestBody String json){
+    public ResponseEntity<Map<String, String>> createNewBillForCheckout(@RequestBody String json){
+        Map<String, String> map = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
         try {
             JsonNode jsonNode = mapper.readTree(json);
@@ -80,6 +88,10 @@ public class BillController {
             this.billService.createNewBillForCheckout(bill);
         }catch (Exception e){
             System.out.println(e.getMessage());
+            map.put("message", "Could not create a bill");
+            return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        map.put("message", "successful created bill for checkout");
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }
