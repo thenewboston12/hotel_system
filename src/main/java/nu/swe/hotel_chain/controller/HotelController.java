@@ -23,6 +23,7 @@ public class HotelController {
     @ResponseStatus(HttpStatus.OK)
     // GETS ALL HOTELS
     // api/hotels/
+    // for the sake of deploy
     public List<Hotel> getHotels(){
         return this.hotelService.getHotels();
     }
