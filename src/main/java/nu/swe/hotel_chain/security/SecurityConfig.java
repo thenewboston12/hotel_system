@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/hotel/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/employees/**").hasAnyAuthority("Manager");
         // ... many many mappings ----- change .authenticated() to secure. or .permitAll() to access
-        http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests().anyRequest().permitAll();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
