@@ -82,6 +82,15 @@ CREATE TABLE public.employee (
 
 ALTER TABLE public.employee OWNER TO postgres;
 
+ALTER TABLE public.employee ALTER COLUMN employee_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.employee_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
 --
 -- Name: guest; Type: TABLE; Schema: public; Owner: postgres
 --
@@ -101,6 +110,15 @@ CREATE TABLE public.guest (
 
 
 ALTER TABLE public.guest OWNER TO postgres;
+
+ALTER TABLE public.guest ALTER COLUMN guest_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.guest_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
 
 --
 -- Name: hibernate_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -274,6 +292,7 @@ COPY public.bills (res_id, hotel_id, service_type, total_price, "time", bill_id)
 3	Hilton_Ast	Breakfast	10000	2021-12-25 10:23:54	1
 2	Hilton_Ast	SPA	20000	2021-12-07 23:32:30	3
 2	Hilton_Ast	Breakfast	10000	2021-12-08 20:42:30	4
+2	Hilton_Ast	Breakfast	10000	2021-12-08 20:42:30	5
 \.
 
 
@@ -420,7 +439,7 @@ Aidana@gmail.com	1234	Manager	7
 -- Name: bills_bill_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.bills_bill_id_seq', 4, true);
+SELECT pg_catalog.setval('public.bills_bill_id_seq', 5, true);
 
 
 --

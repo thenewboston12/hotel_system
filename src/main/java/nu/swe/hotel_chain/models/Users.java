@@ -42,8 +42,6 @@ public class Users {
 //    @JsonManagedReference(value = "employee-user")
 //    private Employee employee;
 
-
-
     public Integer getU_id() {
         return u_id;
     }

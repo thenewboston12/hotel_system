@@ -1,5 +1,6 @@
 package nu.swe.hotel_chain.service;
 
+import nu.swe.hotel_chain.exceptions.IllegalIdException;
 import nu.swe.hotel_chain.models.Guest;
 import nu.swe.hotel_chain.models.Users;
 import nu.swe.hotel_chain.repository.GuestRepository;
@@ -31,5 +32,13 @@ public class GuestService {
 //        }
         guestRepository.save(guest);
 
+    }
+
+    public List<Guest> getGuestByEmail(String email) {
+        Optional<Guest> optionalGuest = this.guestRepository.findGuestByEmail(email);
+        if (!optionalGuest.isPresent()){
+            throw new  IllegalIdException("No guest with " + email);
+        }
+        return List.of(optionalGuest.get());
     }
 }

@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/hotel")
+@RequestMapping(path = "api/hotels")
 public class HotelController {
     private final HotelService hotelService;
 
@@ -22,6 +22,7 @@ public class HotelController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     // GETS ALL HOTELS
+    // api/hotels/
     public List<Hotel> getHotels(){
         return this.hotelService.getHotels();
     }
@@ -29,12 +30,14 @@ public class HotelController {
     @GetMapping(path = "{hotel_id}")
     @ResponseStatus(HttpStatus.OK)
     // GET HOTEL BY ID
+    // api/hotels/{hotel_id}
     public List<Hotel> getHotel(@PathVariable("hotel_id") String hotel_id){
         return this.hotelService.getHotel(hotel_id);
     }
 
     @GetMapping(path = "/availabe")
     // GET AVAILABLE HOTELS FROM DESTINATION CITY AND DATES, Example: api/hotel/available?destination="Almaty"&check_in="25-12-2021"&check_out="29-12-2021"
+    // api/hotels/available?destination=?&r_type=?&check_in=?&check_out=?
     public List<Hotel> getAvailableHotelsByCityAndDates(@RequestParam(required = true) String destination,
                                                         @RequestParam(required = true) String r_type,
                                                         @RequestParam(required = true)String check_in,
@@ -43,4 +46,12 @@ public class HotelController {
         LocalDate check_out_date = LocalDate.parse(check_out);
         return this.hotelService.getAvailableHotelsByCityAndDates(destination, r_type, check_in_date, check_out_date);
     };
+
+    @GetMapping(path = "city/{h_city}")
+    @ResponseStatus(HttpStatus.OK)
+    // GET HOTEL BY CITY
+    // api/hotels/city/{city}
+    public List<Hotel> getHotelByCity(@PathVariable("h_city") String city){
+        return this.hotelService.getHotelByCity(city);
+    }
 }
