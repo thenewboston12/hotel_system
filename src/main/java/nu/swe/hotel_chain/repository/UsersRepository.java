@@ -14,4 +14,6 @@ public interface UsersRepository extends JpaRepository<Users, String> {
     @Query("SELECT u FROM Users u WHERE u.email = ?1")
     Optional<Users> findUserByEmail(String email);
 
+    Users findByEmail(String email);
+
 }
