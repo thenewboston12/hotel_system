@@ -1,10 +1,7 @@
 package nu.swe.hotel_chain.service;
 
 import nu.swe.hotel_chain.exceptions.IllegalIdException;
-import nu.swe.hotel_chain.models.Hotel;
-import nu.swe.hotel_chain.models.Room;
-import nu.swe.hotel_chain.models.RoomType;
-import nu.swe.hotel_chain.models.RoomTypeId;
+import nu.swe.hotel_chain.models.*;
 import nu.swe.hotel_chain.repository.HotelRepository;
 import nu.swe.hotel_chain.repository.RoomRepository;
 import nu.swe.hotel_chain.repository.RoomTypeRepository;
@@ -63,5 +60,29 @@ public class RoomService {
             throw new IllegalIdException("There is no rooms with hotel id " + hotel_id + " and r_type " + r_type);
         }
         return this.roomRepository.findAvailableRoomsInHotelWithR_Type(hotel_id, r_type, check_in_date, check_out_date);
+    }
+
+    public boolean updateRoomStatuses(String hotel_id, Integer r_number, boolean changeOccupancy, boolean changeCleaning) {
+        Optional<Room> roomOptional = this.roomRepository.findById(new RoomId(r_number, hotel_id));
+        if(!roomOptional.isPresent()){
+            throw new IllegalIdException("There is no rooms with hotel id " + hotel_id + " and number " + r_number);
+        }
+        Room room = roomOptional.get();
+        if(changeOccupancy){
+            room.setIs_occupied(!room.isIs_occupied());
+        }
+        if(changeCleaning){
+            room.setIs_clean(!room.isIs_clean());
+        }
+        this.roomRepository.save(room);
+        return true;
+    }
+
+    public List<Room> getRoomByHotelIdAndR_number(String hotel_id, Integer r_number) {
+        Optional<Room> roomOptional = this.roomRepository.findById(new RoomId(r_number, hotel_id));
+        if(!roomOptional.isPresent()){
+            throw new IllegalIdException("There is no rooms with hotel id " + hotel_id + " and number " + r_number);
+        }
+        return List.of(roomOptional.get());
     }
 }
