@@ -37,4 +37,8 @@ public class HotelService {
     public List<Hotel> getHotelByCity(String city) {
         return this.hotelRepository.findByCity(city);
     }
+
+    public List<String> getDistinctCities() {
+        return this.hotelRepository.findDistinctCities();
+    }
 }

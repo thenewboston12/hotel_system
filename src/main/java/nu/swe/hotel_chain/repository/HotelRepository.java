@@ -27,4 +27,7 @@ public interface HotelRepository extends JpaRepository<Hotel, String> {
 
     @Query(value = "select H from Hotel as H where H.h_city = ?1")
     List<Hotel> findByCity(String city);
+
+    @Query(value = "select distinct H.h_city from Hotel as H")
+    List<String> findDistinctCities();
 }

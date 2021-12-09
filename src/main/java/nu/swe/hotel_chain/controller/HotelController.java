@@ -56,4 +56,11 @@ public class HotelController {
     public List<Hotel> getHotelByCity(@PathVariable("h_city") String city){
         return this.hotelService.getHotelByCity(city);
     }
+
+    @GetMapping(path = "cities")
+    @ResponseStatus(HttpStatus.OK)
+    // GET ALL CITIES
+    public List<String> getDistinctCities(){
+        return this.hotelService.getDistinctCities();
+    }
 }
