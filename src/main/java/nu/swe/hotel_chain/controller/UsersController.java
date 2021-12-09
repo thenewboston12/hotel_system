@@ -6,7 +6,6 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import nu.swe.hotel_chain.exceptions.HException;
 import nu.swe.hotel_chain.models.Guest;
 import nu.swe.hotel_chain.models.Users;
 import nu.swe.hotel_chain.service.GuestService;
@@ -119,13 +118,15 @@ public class UsersController {
             Users userToInsert  = new Users(email, password, role);
             Guest guestToInsert = new Guest(id_type, id_number, g_address, mobile_n, home_n, g_name, g_category, g_surname, email);
 
+//            guestService.addNewGuest(guestToInsert);
 
             boolean check = usersService.addNewUser(userToInsert);
 
             if ( check){
                 guestService.addNewGuest(guestToInsert);
             }else {
-                throw new HException( "user parameters are incorrect");
+                map.put("message", "user credentials incorrect");
+                return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
         }catch(Exception e){
@@ -136,3 +137,23 @@ public class UsersController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }
+
+/* signup request sample
+{
+  	"email" : "thenewboston12@gmail.com",
+    "password":"1234",
+    "role" : "Staff",
+    "id_type" :"DriversLicense",
+    "id_number":"11213",
+    "address":"Wall St 13",
+    "mobile_n":"1231241",
+    "home_n":"0",
+    "name" :"Stan",
+    "surname" : "lee",
+    "g_category" : "vip"
+}
+
+
+
+
+ */

@@ -14,7 +14,7 @@ import java.util.Map;
 @RestController
 @CrossOrigin
 @RequestMapping(path = "api/schedules")
-public class ScheduleController {
+public class    ScheduleController {
     private final ScheduleService scheduleService;
 
     public ScheduleController(ScheduleService scheduleService) {
@@ -60,7 +60,7 @@ public class ScheduleController {
         Map<String, String> map = new HashMap<>();
         System.out.println(start_time);
         if(!this.scheduleService.editSchedule(employee_id, hotel_id, r_number, new_employee_id, new_r_number, new_hotel_id, start_time, end_time)){
-            map.put("message", "Edition was unsuccessful");
+            map.put("message", "Update was unsuccessful");
             return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         map.put("message", "Successfully edited schedule");
