@@ -58,7 +58,7 @@ public class ReservationService {
         return this.reservationRepository.findByGuest_Id(guest_id);
     }
 
-    public boolean createNewReservation(Reservation reservation) {
+    public boolean createNewReservation(Reservation reservation, String r_type) {
         Optional<Hotel> optionalHotel = this.hotelRepository.findById(reservation.getHotel_id());
         if (!optionalHotel.isPresent()){
             throw new IllegalIdException("There is no hotel with id " + reservation.getHotel_id());
@@ -68,6 +68,12 @@ public class ReservationService {
         if(!optionalGuest.isPresent()){
             throw new IllegalIdException("There is no guest with id " + reservation.getGuest_id());
         }
+
+        List<Room> rooms = this.roomRepository.findAvailableRoomsInHotelWithR_Type(reservation.getHotel_id(), r_type, reservation.getCheck_in(), reservation.getCheck_out());
+        if(rooms.size() == 0){
+            throw new NotAvailableRoomException("There is no available rooms");
+        }
+        reservation.setR_number(rooms.get(0).getR_number());
 
         Optional<Room> optionalRoom = this.roomRepository.findById(new RoomId(reservation.getR_number(), reservation.getHotel_id()));
         if (!optionalRoom.isPresent()){

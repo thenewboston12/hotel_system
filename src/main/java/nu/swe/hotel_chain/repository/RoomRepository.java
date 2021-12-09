@@ -22,9 +22,9 @@ public interface RoomRepository extends JpaRepository<Room, RoomId> {
 
     @Query(value = "" +
             "select R from Room as R where R.hotel_id = ?1 and R.r_type = ?2 and exists (" +
-                "select RS from Reservation as RS where RS.r_number = R.r_number and RS.hotel_id = R.hotel_id and " +
+                "select RS from Reservation as RS where RS.hotel_id = R.hotel_id and RS.room.r_type = R.r_type and ((not RS.r_number = R.r_number) or (RS.r_number = R.r_number and " +
                 "(?3 not between RS.check_in and RS.check_out) and (?4 not between RS.check_in and RS.check_out)" +
-            ")"
+            ")))"
     )
     List<Room> findAvailableRoomsInHotelWithR_Type(String hotel_id, String r_type,
                                                           LocalDate check_in_date, LocalDate check_out_date);

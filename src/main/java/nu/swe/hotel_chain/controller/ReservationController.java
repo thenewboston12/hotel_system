@@ -1,5 +1,7 @@
 package nu.swe.hotel_chain.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import nu.swe.hotel_chain.models.Reservation;
 import nu.swe.hotel_chain.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,10 +54,20 @@ public class ReservationController {
 
     @PostMapping(path = "create")
     // api/reservations/create
-    public ResponseEntity<Map<String, String>> createNewReservation(@RequestBody Reservation reservation){
+    public ResponseEntity<Map<String, String>> createNewReservation(@RequestBody String json){
         Map<String, String> map = new HashMap<>();
-        if(!this.reservationService.createNewReservation(reservation)){
-            map.put("message", "reservation was unsuccessful");
+        ObjectMapper mapper = new ObjectMapper();
+        try{
+            JsonNode jsonNode = mapper.readTree(json);
+            int guest_id = jsonNode.get("guest_id").asInt();
+            String hotel_id = jsonNode.get("hotel_id").asText();
+            String r_type = jsonNode.get("r_type").asText();
+            LocalDate check_in = LocalDate.parse(jsonNode.get("check_in").asText());
+            LocalDate check_out = LocalDate.parse(jsonNode.get("check_out").asText());
+            Reservation reservation = new Reservation(guest_id, hotel_id, 0, check_in, check_out);
+            this.reservationService.createNewReservation(reservation, r_type);
+        }catch (Exception e){
+            map.put("message", e.getMessage());
             return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         map.put("message", "reservation was created successfully");

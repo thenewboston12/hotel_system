@@ -17,11 +17,11 @@ public interface HotelRepository extends JpaRepository<Hotel, String> {
     @Query(value =
             "SELECT H FROM Hotel AS H where H.h_city = ?1 AND exists (" + 
                     "SELECT R from  Room as R WHERE R.hotel_id=H.hotel_id and R.r_type = ?2 and exists (" +
-                        "SELECT RS FROM Reservation as RS where RS.hotel_id=H.hotel_id and " +
+                        "SELECT RS FROM Reservation as RS where RS.hotel_id=H.hotel_id and RS.room.r_type = R.r_type and (not RS.r_number = R.r_number) or (RS.r_number = R.r_number and" +
                         "(?3 not between RS.check_in and RS.check_out) and " +
                         "(?4 not between RS.check_in and RS.check_out)" +
                     ")" +
-            ")"
+            "))"
     )
     List<Hotel> findAvailableHotels(String destination, String r_type, LocalDate check_in, LocalDate check_out);
 
