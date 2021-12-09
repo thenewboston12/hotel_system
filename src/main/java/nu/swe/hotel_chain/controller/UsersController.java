@@ -101,7 +101,7 @@ public class UsersController {
             JsonNode jsonNode = mapper.readTree(userAndGuest);
             String email = jsonNode.get("email").asText();
             String password = jsonNode.get("password").asText();
-            String role = jsonNode.get("role").asText();
+            String role = "Guest";
             String id_type = jsonNode.get("id_type").asText();
             String id_number = jsonNode.get("id_number").asText();
             String g_address = jsonNode.get("address").asText();
