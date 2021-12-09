@@ -46,6 +46,7 @@ public class ScheduleController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
+    //TODO: PutMapping does not work. Need to fix it
     @PutMapping(path = "employee/{employee_id}/hotel_id/{hotel_id}/room_number/{r_number}/edit")
     public ResponseEntity<Map<String, String>> editSchedule(@PathVariable("employee_id") Integer employee_id,
                                                             @PathVariable("hotel_id") String hotel_id,
@@ -62,6 +63,19 @@ public class ScheduleController {
             return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         map.put("message", "Successfully edited schedule");
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "employee/{employee_id}/hotel_id/{hotel_id}/room_number/{r_number}/delete")
+    public ResponseEntity<Map<String, String>> deleteSchedule(@PathVariable("employee_id") Integer employee_id,
+                                                            @PathVariable("hotel_id") String hotel_id,
+                                                            @PathVariable("r_number") Integer r_number){
+        Map<String, String> map = new HashMap<>();
+        if(!this.scheduleService.deleteSchedule(employee_id, hotel_id, r_number)){
+            map.put("message", "Deletion was unsuccessful");
+            return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        map.put("message", "Successfully deleted schedule");
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }

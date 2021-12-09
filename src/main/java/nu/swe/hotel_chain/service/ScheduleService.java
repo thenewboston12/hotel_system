@@ -81,7 +81,7 @@ public class ScheduleService {
         return true;
     }
 
-    public boolean editSchedule(Integer employee_id, String hotel_id, Integer r_number, Integer new_employee_id, Integer new_r_number, String new_hotel_id, Timestamp start_time, Timestamp end_time) {
+    private boolean checkForValidity(Integer employee_id, String hotel_id, Integer r_number){
         Optional<Employee> employeeOptional = this.empRepository.findById(employee_id);
         if(employeeOptional.isEmpty()){
             throw new IllegalIdException("There is no employee with id " + employee_id);
@@ -96,6 +96,11 @@ public class ScheduleService {
         if(roomOptional.isEmpty()){
             throw new IllegalIdException("There is no room in hotel id " + hotel_id + " room number " + r_number);
         }
+        return true;
+    }
+
+    public boolean editSchedule(Integer employee_id, String hotel_id, Integer r_number, Integer new_employee_id, Integer new_r_number, String new_hotel_id, Timestamp start_time, Timestamp end_time) {
+        checkForValidity(employee_id, hotel_id, r_number);
 
         Schedule schedule = this.scheduleRepository.findById(new ScheduleId(employee_id, r_number, hotel_id)).get();
 
@@ -135,6 +140,12 @@ public class ScheduleService {
 
         System.out.println(schedule);
 
+        return true;
+    }
+
+    public boolean deleteSchedule(Integer employee_id, String hotel_id, Integer r_number) {
+        checkForValidity(employee_id, hotel_id, r_number);
+        this.scheduleRepository.deleteById(new ScheduleId(employee_id, r_number, hotel_id));
         return true;
     }
 }
