@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping(path = "api/hotels")
 public class HotelController {
     private final HotelService hotelService;

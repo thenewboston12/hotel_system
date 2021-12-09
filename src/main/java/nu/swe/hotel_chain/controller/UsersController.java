@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@CrossOrigin
 @RequestMapping(path = "api/users")
 public class UsersController {
     private final UsersService usersService;

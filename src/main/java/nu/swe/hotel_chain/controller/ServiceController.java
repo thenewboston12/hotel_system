@@ -3,14 +3,12 @@ package nu.swe.hotel_chain.controller;
 import nu.swe.hotel_chain.models.Service;
 import nu.swe.hotel_chain.service.ServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping(path = "api/services")
 public class ServiceController {
     private final ServiceService serviceService;
