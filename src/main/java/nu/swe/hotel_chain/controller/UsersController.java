@@ -109,12 +109,12 @@ public class UsersController {
             String home_n = jsonNode.get("home_n").asText();
             String g_name = jsonNode.get("name").asText();
             String g_surname = jsonNode.get("surname").asText();
-            String g_category = jsonNode.get("g_category").asText();
+            String g_category = "Ordinary";
 
-            // uncomment to test
-//            System.out.print(email + " + " + password + " + " + role + " + " +id_type + " + " + id_number + " + " + g_address + " + "
-//                + mobile_n + " + " + home_n + " + " + " + " + g_name + " + " + g_surname +" + " + g_category + " + "
-//                );
+//             uncomment to test
+            System.out.print(email + " + " + password + " + " + role + " + " +id_type + " + " + id_number + " + " + g_address + " + "
+                + mobile_n + " + " + home_n + " + " + " + " + g_name + " + " + g_surname +" + " + g_category + " + "
+                );
             Users userToInsert  = new Users(email, password, role);
             Guest guestToInsert = new Guest(id_type, id_number, g_address, mobile_n, home_n, g_name, g_category, g_surname, email);
 
