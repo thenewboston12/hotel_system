@@ -75,6 +75,10 @@ public class ScheduleService {
             throw new IllegalIdException("There is no room in hotel id " + hotel_id + " room number " + r_number);
         }
 
+        List<Schedule> schedules = scheduleRepository.findByAllIds(hotel_id, r_number, employee_id);
+        if( !schedules.isEmpty()){
+            throw new IllegalStateException("This exact schedule already exists");
+        }
         System.out.println(schedule);
 
         this.scheduleRepository.save(schedule);

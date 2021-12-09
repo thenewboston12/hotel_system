@@ -42,15 +42,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
-        customAuthenticationFilter.setFilterProcessesUrl("/api/login");
-
         http.csrf().disable();
+
+        customAuthenticationFilter.setFilterProcessesUrl("/api/login");
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/employees/**").hasAnyAuthority("Manager");
 
         // this is the place to configure access to different roles
-        http.authorizeRequests().antMatchers("/api/login/**", "api/users/token/refresh/**", "api/users/signup/**").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/hotel/**").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/employees/**").hasAnyAuthority("Manager");
+//        http.authorizeRequests().antMatchers("/api/login/**", "api/users/token/refresh/**", "api/users/signup/**").permitAll();
+        http.authorizeRequests().antMatchers( "/api/**").permitAll();
         // ... many many mappings ----- change .authenticated() to secure. or .permitAll() to access
         http.authorizeRequests().anyRequest().permitAll();
         http.addFilter(customAuthenticationFilter);
